@@ -6,16 +6,71 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="500dp"
-        android:layout_height="200dp"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.456" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C7C7C7"
+        android:gravity="center"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#C7C7C7"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_height="60dp"
+                android:layout_width="200dp"
+                android:text="寝室聊天系统登录"
+                android:textSize="24dp"
+                android:gravity="center_horizontal"
+                >
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/UserName"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:background="#FFFFFF"
+                android:layout_margin="20dp"
+                android:text="请输入用户名"
+                >
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/Password"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:background="#FFFFFF"
+                android:text="请输入密码"
+                >
+
+            </EditText>
+
+            <Button
+                android:id="@+id/Register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="注册"></Button>
+
+            <Button
+                android:id="@+id/Login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@+id/Register"
+                android:gravity="center"
+                android:text="登录">
+
+            </Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
