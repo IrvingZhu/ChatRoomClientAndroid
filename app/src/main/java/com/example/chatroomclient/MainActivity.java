@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Socket sock = new Socket();
+//                first,send a socket to confirm.
+
             }
         });
     }
