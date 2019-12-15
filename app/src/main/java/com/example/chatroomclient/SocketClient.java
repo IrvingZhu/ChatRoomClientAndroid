@@ -10,29 +10,41 @@ import java.net.Socket;
 public class SocketClient {
     private static final String host = "127.0.0.1";
     private static final int port = 8888;
+    private Socket socket;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
-    public void connect(String host, int port) {
-        Socket socket = null;
-        BufferedReader reader = null;
-        PrintWriter writer = null;
-
+    public boolean deliverThisThing(String res_uname, String res_upassword) {
+        this.connect(host, port);
         try {
-            socket = new Socket();
-            socket.connect(new InetSocketAddress(host, port));
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(socket.getOutputStream(), true);
-
             while (true) {
-//                writer.println("Hello Server, I am " + socket.getInetAddress());
-//                String response = reader.readLine();
-//                System.out.println("server return message : " + response);
-//
-//                Thread.sleep(3000);
-
+                String send_info = "Login " + res_uname + " " + res_upassword;
+                writer.println(send_info);
+                String response = reader.readLine();
+                if (response.compareTo("SuccessLogin") == 0) {
+//                    change the new page
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public void connect(String host, int port) {
+        try {
+            this.socket = new Socket();
+            this.socket.connect(new InetSocketAddress(host, port));
+            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.writer = new PrintWriter(socket.getOutputStream(), true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
                 if (reader != null) {
                     reader.close();

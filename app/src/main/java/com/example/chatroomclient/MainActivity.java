@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
 //                find info from button
                 EditText et_uname = findViewById(R.id.UserName);
                 EditText et_upassword = findViewById(R.id.Password);
-                string res = et_uname.getText().toString();
+                String res_uname = et_uname.getText().toString();
+                String res_upassword = et_upassword.getText().toString();
+
             }
         });
     }
