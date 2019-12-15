@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.os.Bundle;
+import android.widget.EditText;
 
 import java.net.Socket;
 
@@ -21,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-//                first,send a socket to confirm.
-
+//                find info from button
+                EditText et_uname = findViewById(R.id.UserName);
+                EditText et_upassword = findViewById(R.id.Password);
+                string res = et_uname.getText().toString();
             }
         });
     }

@@ -28,7 +28,7 @@ public class SocketClient {
 //                System.out.println("server return message : " + response);
 //
 //                Thread.sleep(3000);
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
