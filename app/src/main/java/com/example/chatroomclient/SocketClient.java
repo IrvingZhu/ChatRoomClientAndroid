@@ -17,16 +17,16 @@ public class SocketClient {
     public boolean Login(String res_uname, String res_upassword) {
         this.connect(host, port);
         try {
-            while (true) {
-                String send_info = "Login " + res_uname + " " + res_upassword;
-                writer.println(send_info);
-                String response = reader.readLine();
-                if (response.compareTo("SuccessLogin") == 0) {
+            String send_info = "Login " + res_uname + " " + res_upassword;
+            writer.println(send_info);
+            String response = reader.readLine();
+            if (response.compareTo("SuccessLogin") == 0) {
 //                    change the new page
-                    return true;
-                } else {
-                    return false;
-                }
+                this.socket.close();
+                return true;
+            } else {
+                this.socket.close();
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +35,7 @@ public class SocketClient {
         }
     }
 
-    public void connect(String host, int port) {
+    private void connect(String host, int port) {
         try {
             this.socket = new Socket();
             this.socket.connect(new InetSocketAddress(host, port));
