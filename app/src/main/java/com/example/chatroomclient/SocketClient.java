@@ -14,7 +14,7 @@ public class SocketClient {
     private BufferedReader reader;
     private PrintWriter writer;
 
-    public boolean deliverThisThing(String res_uname, String res_upassword) {
+    public boolean Login(String res_uname, String res_upassword) {
         this.connect(host, port);
         try {
             while (true) {
