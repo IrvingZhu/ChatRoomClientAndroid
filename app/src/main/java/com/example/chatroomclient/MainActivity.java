@@ -28,7 +28,12 @@ public class MainActivity extends AppCompatActivity {
                 String res_uname = et_uname.getText().toString();
                 String res_upassword = et_upassword.getText().toString();
                 SocketClient client = new SocketClient();
-                client.Login(res_uname,res_upassword);
+                boolean res = client.Login(res_uname,res_upassword);
+                if(res == true){
+//                    goto new page
+                }else{
+//                    fault, put up a new reminder into page.
+                }
             }
         });
     }
