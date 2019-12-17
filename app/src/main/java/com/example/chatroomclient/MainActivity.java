@@ -2,11 +2,13 @@ package com.example.chatroomclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.net.Socket;
 
@@ -31,8 +33,14 @@ public class MainActivity extends AppCompatActivity {
                 boolean res = client.Login(res_uname,res_upassword);
                 if(res == true){
 //                    goto new page
+                    Intent intent = new Intent();
+
                 }else{
-//                    fault, put up a new reminder into page.
+//                    fault, put up a new reminder into page
+//                    and set the edit text is null.
+                    et_uname.setText("");
+                    et_upassword.setText("");
+                    Toast.makeText(MainActivity.this, "登录失败,用户名或密码错误", Toast.LENGTH_LONG).show();
                 }
             }
         });
