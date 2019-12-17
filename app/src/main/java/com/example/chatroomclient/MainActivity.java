@@ -31,8 +31,13 @@ public class MainActivity extends AppCompatActivity {
                 EditText et_upassword = findViewById(R.id.Password);
                 String res_uname = et_uname.getText().toString();
                 String res_upassword = et_upassword.getText().toString();
-                SocketClient client = new SocketClient();
-                boolean res = client.Login(res_uname,res_upassword);
+                new Thread(new Runnable(res_uname,res_upassword) {
+                    @Override
+                    public void run() {
+                        SocketClient client = new SocketClient();
+                        boolean res = client.Login(res_uname,res_upassword);
+                    }
+                });
                 if(res == true){
 //                    goto new page
                     Intent intent = new Intent();

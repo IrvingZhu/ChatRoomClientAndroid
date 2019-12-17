@@ -78,4 +78,13 @@
             android:inputType="textPassword" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/regis_check"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:text="注册"
+        android:layout_gravity="center">
+
+    </Button>
+
 </LinearLayout>

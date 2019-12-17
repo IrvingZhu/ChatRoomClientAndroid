@@ -57,13 +57,14 @@
                 android:id="@+id/Register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="注册"></Button>
+                android:text="注册">
+
+            </Button>
 
             <Button
                 android:id="@+id/Login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@+id/Register"
                 android:gravity="center"
                 android:text="登录">
 
