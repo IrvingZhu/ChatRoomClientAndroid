@@ -15,12 +15,14 @@ import java.net.Socket;
 public class MainActivity extends AppCompatActivity {
 
     private Button Login;
+    private Button Register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Login = findViewById(R.id.Login);
+        Register = findViewById(R.id.Register);
         Login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
                 if(res == true){
 //                    goto new page
                     Intent intent = new Intent();
-
                 }else{
 //                    fault, put up a new reminder into page
 //                    and set the edit text is null.
