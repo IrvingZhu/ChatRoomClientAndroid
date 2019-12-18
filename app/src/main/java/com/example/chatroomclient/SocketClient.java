@@ -18,6 +18,7 @@ public class SocketClient {
         this.connect(host, port);
         try {
             String send_info = "Login " + res_uname + " " + res_upassword;
+            System.out.println("Prepare to send info");
             writer.println(send_info);
             String response = reader.readLine();
             if (response.compareTo("SuccessLogin") == 0) {
