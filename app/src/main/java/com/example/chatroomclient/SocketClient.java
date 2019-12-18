@@ -3,23 +3,30 @@ package com.example.chatroomclient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+
 public class SocketClient {
-    private static final String host = "10.2.213.48";
-    private static final int port = 8888;
-    private Socket socket;
+    private static Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
 
     public boolean Login(String res_uname, String res_upassword) {
-        this.connect(host, port);
+        this.socket = new Socket();
+        host host = new host();
+//        this.socket.connect(new InetSocketAddress(host, port));
         try {
+            this.socket.connect(new InetSocketAddress(host.host, host.port));
             String send_info = "Login " + res_uname + " " + res_upassword;
-            System.out.println("Prepare to send info");
+            System.out.println("Prepare to send info "+send_info);
+            this.writer = new PrintWriter(this.socket.getOutputStream());
             writer.println(send_info);
+            writer.flush();
+            System.out.println("Send Successful");
+            this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             String response = reader.readLine();
             if (response.compareTo("SuccessLogin") == 0) {
 //                    change the new page
@@ -33,32 +40,6 @@ public class SocketClient {
             e.printStackTrace();
             System.out.println(e);
             return false;
-        }
-    }
-
-    private void connect(String host, int port) {
-        try {
-            this.socket = new Socket();
-            this.socket.connect(new InetSocketAddress(host, port));
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.writer = new PrintWriter(socket.getOutputStream(), true);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-                if (writer != null) {
-                    writer.close();
-                }
-                if (socket != null) {
-                    socket.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
