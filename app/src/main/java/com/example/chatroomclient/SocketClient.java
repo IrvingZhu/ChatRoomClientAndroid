@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class SocketClient {
-    private static final String host = "127.0.0.1";
+    private static final String host = "10.2.213.48";
     private static final int port = 8888;
     private Socket socket;
     private BufferedReader reader;
