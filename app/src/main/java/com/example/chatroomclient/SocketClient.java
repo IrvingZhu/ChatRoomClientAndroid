@@ -22,9 +22,10 @@ public class SocketClient {
             this.socket.connect(new InetSocketAddress(host.host, host.port));
             String send_info = "Login " + res_uname + " " + res_upassword;
             System.out.println("Prepare to send info "+send_info);
-            this.writer = new PrintWriter(this.socket.getOutputStream());
-            writer.println(send_info);
-            writer.flush();
+//            this.writer = new PrintWriter(this.socket.getOutputStream());
+//            writer.println(send_info);
+//            writer.flush();
+            this.socket.getOutputStream().write(send_info.getBytes("UTF-8"));
             System.out.println("Send Successful");
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             String response = reader.readLine();
