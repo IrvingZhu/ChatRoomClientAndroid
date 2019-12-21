@@ -30,6 +30,7 @@ public class SocketClient {
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             String response = reader.readLine();
             System.out.println(response);
+            System.out.println(this.socket.isClosed());
             if (response.compareTo("SuccessLogin") == 0) {
 //                    change the new page
                 this.socket.close();
