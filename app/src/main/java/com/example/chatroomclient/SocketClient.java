@@ -31,7 +31,11 @@ public class SocketClient {
             String response = reader.readLine();
             System.out.println(response);
             System.out.println(this.socket.isClosed());
-            if (response.compareTo("SuccessLogin") == 0) {
+            int posi = response.indexOf("/");
+            System.out.println(posi);
+            String cpy_str = response.substring(0, posi);
+            System.out.println(cpy_str);
+            if (cpy_str.compareTo("SuccessLogin") == 0) {
 //                    change the new page
                 this.socket.close();
                 return true;

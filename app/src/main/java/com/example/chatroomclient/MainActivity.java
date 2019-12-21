@@ -39,15 +39,20 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                });
 
+//                login_Query query = new login_Query();
+//                query.setThisQueryInfo(res_uname, res_upassword);
+//                query.start();
                 login_Query query = new login_Query();
                 query.setThisQueryInfo(res_uname, res_upassword);
-                query.start();
+                Thread t1 = new Thread(query);
+                t1.start();
                 boolean res = query.return_res();
+                System.out.println("the final res is: " + res);
 
                 if(res == true){
 //                    goto new page
+                    System.out.println("Jump to next page...");
                     Toast.makeText(MainActivity.this, "登录成功，正在跳转...", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent();
                 }else{
 //                    fault, put up a new reminder into page
 //                    and set the edit text is null.

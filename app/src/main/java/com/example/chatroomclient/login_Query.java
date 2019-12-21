@@ -1,6 +1,6 @@
 package com.example.chatroomclient;
 
-public class login_Query extends Thread {
+public class login_Query implements Runnable {
     private String res_uname;
     private String res_upassword;
     private boolean res_return;
@@ -9,7 +9,13 @@ public class login_Query extends Thread {
     public void run(){
         SocketClient client = new SocketClient();
         boolean res = client.Login(res_uname,res_upassword);
+        System.out.println(res);
         this.res_return = res;
+        System.out.println("this res is: " + this.res_return);
+    }
+
+    public void setThisRes(boolean res){
+
     }
 
     public void setThisQueryInfo(String res_name,String res_password){
@@ -18,6 +24,7 @@ public class login_Query extends Thread {
     }
 
     public boolean return_res(){
-        return res_return;
+        System.out.println("the return res is: " + this.res_return);
+        return this.res_return;
     }
 }
