@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(res == true){
 //                    goto new page
+                    Toast.makeText(MainActivity.this, "登录成功，正在跳转...", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent();
                 }else{
 //                    fault, put up a new reminder into page
