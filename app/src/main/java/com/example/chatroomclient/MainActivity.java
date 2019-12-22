@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
                 query.setThisQueryInfo(res_uname, res_upassword);
                 Thread t1 = new Thread(query);
                 t1.start();
+//                the thread is alive,if ture,wait for this thread.
+                while(t1.isAlive()){}
+
                 boolean res = query.return_res();
                 System.out.println("the final res is: " + res);
 
