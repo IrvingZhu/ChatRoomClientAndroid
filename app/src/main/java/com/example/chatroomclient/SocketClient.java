@@ -22,21 +22,22 @@ public class SocketClient {
             this.socket.connect(new InetSocketAddress(host.host, host.port));
             String send_info = "Login " + res_uname + " " + res_upassword;
             System.out.println("Prepare to send info "+send_info);
-//            this.writer = new PrintWriter(this.socket.getOutputStream());
-//            writer.println(send_info);
-//            writer.flush();
+
             this.socket.getOutputStream().write(send_info.getBytes("UTF-8"));
             System.out.println("Send Successful");
+
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             String response = reader.readLine();
             System.out.println(response);
+
             System.out.println(this.socket.isClosed());
+
             int posi = response.indexOf("/");
             System.out.println(posi);
             String cpy_str = response.substring(0, posi);
             System.out.println(cpy_str);
+
             if (cpy_str.compareTo("SuccessLogin") == 0) {
-//                    change the new page
                 this.socket.close();
                 return true;
             } else {
@@ -49,4 +50,35 @@ public class SocketClient {
             return false;
         }
     }
+
+    public boolean Register(String u_name, String u_password){
+        this.socket = new Socket();
+        host host = new host();
+        try{
+            this.socket.connect(new InetSocketAddress(host.host, host.port));
+            String send_info = "Register " + u_name + " " + u_password;
+            System.out.println("Prepare to send info "+send_info);
+
+            this.socket.getOutputStream().write(send_info.getBytes("UTF-8"));
+            System.out.println("Send Successful");
+
+            this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            String response = reader.readLine();
+            System.out.println(response);
+
+            System.out.println(this.socket.isClosed());
+
+            if(response.compareTo("SuccessRegister") == 0){
+                this.socket.close();
+                return true;
+            }else{
+                this.socket.close();
+                return false;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

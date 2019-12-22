@@ -31,17 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 EditText et_upassword = findViewById(R.id.Password);
                 String res_uname = et_uname.getText().toString();
                 String res_upassword = et_upassword.getText().toString();
-//                new Thread(new Runnable(res_uname,res_upassword) {
-//                    @Override
-//                    public void run() {
-//                        SocketClient client = new SocketClient();
-//                        boolean res = client.Login(res_uname,res_upassword);
-//                    }
-//                });
 
-//                login_Query query = new login_Query();
-//                query.setThisQueryInfo(res_uname, res_upassword);
-//                query.start();
+//                query to server database
                 login_Query query = new login_Query();
                 query.setThisQueryInfo(res_uname, res_upassword);
                 Thread t1 = new Thread(query);
@@ -63,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
                     et_upassword.setText("");
                     Toast.makeText(MainActivity.this, "登录失败,用户名或密码错误", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        Register.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, register_Activity.class);
+                startActivity(intent);
             }
         });
     }
