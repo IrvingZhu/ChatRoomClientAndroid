@@ -10,12 +10,8 @@ public class login_Query implements Runnable {
         SocketClient client = new SocketClient();
         boolean res = client.Login(res_uname,res_upassword);
         System.out.println(res);
-        setThisRes(res);
-        System.out.println("this res is: " + this.res_return);
-    }
-
-    public void setThisRes(boolean res){
         this.res_return = res;
+        System.out.println("this res is: " + this.res_return);
     }
 
     public void setThisQueryInfo(String res_name,String res_password){
