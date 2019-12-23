@@ -23,7 +23,7 @@ public class SocketClient {
             String send_info = "Login " + res_uname + " " + res_upassword;
             System.out.println("Prepare to send info "+send_info);
 
-            this.socket.getOutputStream().write(send_info.getBytes("UTF-8"));
+            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
             System.out.println("Send Successful");
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -59,7 +59,7 @@ public class SocketClient {
             String send_info = "Register " + u_name + " " + u_password;
             System.out.println("Prepare to send info "+send_info);
 
-            this.socket.getOutputStream().write(send_info.getBytes("UTF-8"));
+            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
             System.out.println("Send Successful");
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -68,7 +68,12 @@ public class SocketClient {
 
             System.out.println(this.socket.isClosed());
 
-            if(response.compareTo("SuccessRegister") == 0){
+            int posi = response.indexOf("/");
+            System.out.println(posi);
+            String cpy_str = response.substring(0, posi);
+            System.out.println(cpy_str);
+
+            if(cpy_str.compareTo("SuccessRegister") == 0){
                 this.socket.close();
                 return true;
             }else{
