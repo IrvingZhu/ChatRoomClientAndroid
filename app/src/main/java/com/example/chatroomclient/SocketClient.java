@@ -86,4 +86,35 @@ public class SocketClient {
         }
     }
 
+    public ArrayList<String> searchAllRoom(String uid){
+        ArrayList<String> res = new ArrayList<String>();
+        this.socket = new Socket();
+        host host = new host();
+
+        try{
+            this.socket.connect(new InetSocketAddress(host.host, host.port));
+            String send_info = "SearchUserAllJoinedRoom " + uid;
+
+            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            System.out.println("Prepare to send info "+send_info);
+
+            this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            String response = reader.readLine();
+            System.out.println(response);
+
+            int posi = response.indexOf("/");
+            System.out.println(posi);
+            String room_info = response.substring(0, posi);
+            System.out.println(room_info);
+
+//            do some thing not finished
+
+            return res;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return res;
+        }
+    }
+
 }
