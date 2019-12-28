@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Jump to next page...");
                     Toast.makeText(MainActivity.this, "登录成功，正在跳转...", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, ChatSetActivity.class);
+                    intent.putExtra("uname", res_uname);
+                    intent.putExtra("upassword", res_upassword);
+                    MainActivity.this.startActivity(intent);
                 }else{
 //                    fault, put up a new reminder into page
 //                    and set the edit text is null.

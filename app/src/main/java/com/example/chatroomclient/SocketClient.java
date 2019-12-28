@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class SocketClient {
@@ -87,7 +88,6 @@ public class SocketClient {
     }
 
     public ArrayList<String> searchAllRoom(String uid){
-        ArrayList<String> res = new ArrayList<String>();
         this.socket = new Socket();
         host host = new host();
 
@@ -107,12 +107,48 @@ public class SocketClient {
             String room_info = response.substring(0, posi);
             System.out.println(room_info);
 
-//            do some thing not finished
+            findInfo f = new findInfo();
+            ArrayList<String> res = f.findAllInfo(room_info);
 
             return res;
 
         }catch(Exception e){
             e.printStackTrace();
+            ArrayList<String> res = new ArrayList<String>();
+            return res;
+        }
+    }
+
+    public ArrayList<String> searchAllUserInfo(String uname){
+        this.socket = new Socket();
+        host host = new host();
+
+        try {
+            this.socket.connect(new InetSocketAddress(host.host, host.port));
+            String send_info = "SendUserInfo " + uname;
+            System.out.println("Prepare to send info " + send_info);
+
+            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            System.out.println("Send Successful");
+
+            this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            String response = reader.readLine();
+            System.out.println(response);
+
+            System.out.println(this.socket.isClosed());
+
+            int posi = response.indexOf("/");
+            System.out.println(posi);
+            String user_info = response.substring(0, posi);
+            System.out.println(user_info);
+
+            findInfo f = new findInfo();
+            ArrayList<String> res = f.findAllInfo(user_info);
+            return res;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            ArrayList<String> res = new ArrayList<String>();
             return res;
         }
     }
