@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -38,5 +40,13 @@ public class ChatSetActivity extends AppCompatActivity {
         t1.start();
         while(t1.isAlive());
         ArrayList<String> res = search_client.return_roomset();
+        int res_num = res.size(), count = 0;
+        while(count < res_num){
+            LinearLayout ll = (LinearLayout)findViewById(R.id.SLineLayout);
+            TextView tv = new TextView(this);
+            tv.setText(res.get(count));
+            ll.addView(tv);
+            count++;
+        }
     }
 }
