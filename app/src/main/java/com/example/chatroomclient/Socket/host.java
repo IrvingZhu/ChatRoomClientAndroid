@@ -1,4 +1,4 @@
-package com.example.chatroomclient;
+package com.example.chatroomclient.Socket;
 
 public class host {
     public String host = "10.2.213.48";

@@ -1,4 +1,6 @@
-package com.example.chatroomclient;
+package com.example.chatroomclient.utility;
+
+import com.example.chatroomclient.Socket.SocketClient;
 
 public class login_Query implements Runnable {
     private String res_uname;

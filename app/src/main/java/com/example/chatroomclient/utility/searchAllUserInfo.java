@@ -1,4 +1,6 @@
-package com.example.chatroomclient;
+package com.example.chatroomclient.utility;
+
+import com.example.chatroomclient.Socket.SocketClient;
 
 import java.util.ArrayList;
 

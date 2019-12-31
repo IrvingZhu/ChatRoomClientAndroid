@@ -2,6 +2,8 @@ package com.example.chatroomclient;
 
 //import Runnable;
 
+import com.example.chatroomclient.Socket.SocketClient;
+
 public class RegisterActivity implements Runnable {
 
     private String u_name;

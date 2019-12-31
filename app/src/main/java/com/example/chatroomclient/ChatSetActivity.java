@@ -4,8 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.chatroomclient.utility.MyInfoClickListener;
+import com.example.chatroomclient.utility.searchAllRoom;
+import com.example.chatroomclient.utility.searchAllUserInfo;
 
 import java.util.ArrayList;
 
@@ -14,6 +20,10 @@ public class ChatSetActivity extends AppCompatActivity {
     private String uid;
     private String uname;
     private String upassword;
+
+    private ImageView myInfo;
+    private ImageView choose;
+    private ImageView join;
 
     public ChatSetActivity(String uname, String upassword){
 //        this.uname = uname;
@@ -48,5 +58,17 @@ public class ChatSetActivity extends AppCompatActivity {
             ll.addView(tv);
             count++;
         }
+
+        myInfo = findViewById(R.id.myinfo);
+        choose = findViewById(R.id.choose);
+        join = findViewById(R.id.join);
+
+        MyInfoClickListener m_myinfo = new MyInfoClickListener(this.uid, this.uname, this.upassword, 0);
+        MyInfoClickListener m_choose = new MyInfoClickListener(this.uid, this.uname, this.upassword, 1);
+        MyInfoClickListener m_join = new MyInfoClickListener(this.uid, this.uname, this.upassword, 2);
+
+        myInfo.setOnClickListener(m_myinfo);
+        choose.setOnClickListener(m_choose);
+        join.setOnClickListener(m_join);
     }
 }
