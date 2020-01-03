@@ -125,7 +125,7 @@ public class SocketClient {
 
         try {
             this.socket.connect(new InetSocketAddress(host.host, host.port));
-            String send_info = "SendUserInfo " + uname;
+            String send_info = "SearchUserAllInfo " + uname;
             System.out.println("Prepare to send info " + send_info);
 
             this.socket.getOutputStream().write(send_info.getBytes("gb2312"));

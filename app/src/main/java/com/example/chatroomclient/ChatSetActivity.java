@@ -25,14 +25,12 @@ public class ChatSetActivity extends AppCompatActivity {
     private ImageView choose;
     private ImageView join;
 
-    public ChatSetActivity(String uname, String upassword){
-//        this.uname = uname;
-//        this.upassword = upassword;
+    public void Transfer_ChatSetActivity(){
         final Intent intent = getIntent();
         this.uname = intent.getStringExtra("uname");
         this.upassword = intent.getStringExtra("upassword");
 
-        searchAllUserInfo search_client = new searchAllUserInfo();
+        searchAllUserInfo search_client = new searchAllUserInfo(this.uname);
         Thread t1 = new Thread(search_client);
         t1.start();
         while(t1.isAlive());
@@ -44,6 +42,8 @@ public class ChatSetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_set);
+
+        Transfer_ChatSetActivity();
 
         searchAllRoom search_client = new searchAllRoom(this.uid);
         Thread t1 = new Thread(search_client);
