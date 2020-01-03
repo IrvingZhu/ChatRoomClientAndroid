@@ -137,13 +137,14 @@ public class SocketClient {
 
             System.out.println(this.socket.isClosed());
 
-            int posi = response.indexOf("/");
-            System.out.println(posi);
-            String user_info = response.substring(0, posi);
-            System.out.println(user_info);
+//            int posi = response.indexOf("/");
+//            System.out.println(posi);
+//            String user_info = response.substring(0, posi);
+//            System.out.println(user_info);
 
             findInfo f = new findInfo();
-            ArrayList<String> res = f.findAllInfo(user_info);
+            System.out.println(response);
+            ArrayList<String> res = f.findAllInfo(response);
             return res;
 
         }catch(Exception e){
