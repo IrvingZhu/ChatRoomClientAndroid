@@ -36,6 +36,10 @@ public class ChatSetActivity extends AppCompatActivity {
         while(t1.isAlive());
         ArrayList<String> res = search_client.return_userinfo();
         this.uid = res.get(0);
+
+        for(int i = 0; i < res.size(); i++){
+            System.out.println(res.get(i));
+        }
     }
 
     @Override

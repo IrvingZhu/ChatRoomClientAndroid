@@ -145,12 +145,17 @@ public class SocketClient {
             findInfo f = new findInfo();
             System.out.println(response);
             ArrayList<String> res = f.findAllInfo(response);
-            return res;
+            ArrayList<String> result = new ArrayList<String>();
+            for(int i = 1; i < res.size(); i++){
+                result.add(res.get(i));
+            }
+
+            return result;
 
         }catch(Exception e){
             e.printStackTrace();
-            ArrayList<String> res = new ArrayList<String>();
-            return res;
+            ArrayList<String> result = new ArrayList<String>();
+            return result;
         }
     }
 

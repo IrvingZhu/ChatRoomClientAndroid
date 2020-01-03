@@ -11,6 +11,7 @@ public class findInfo {
             int posi = info.indexOf(" ");
             if(posi == -1){
                 res.add(info);
+                info = "";
             }else {
                 end = posi;
                 String each_res = info.substring(start, end);
