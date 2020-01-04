@@ -24,4 +24,12 @@
         <activity android:name=".ChatSetActivity" />
     </application>
 
+    <!-- 得到屏幕正常的物理尺寸 -->
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:resizeable="true"
+        android:anyDensity="true" />
+
 </manifest>

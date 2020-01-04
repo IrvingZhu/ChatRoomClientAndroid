@@ -17,14 +17,14 @@
     <ScrollView
         android:id="@+id/chatset"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
+        android:layout_height="576dp"
         android:layout_gravity="center"
         android:background="#E0FFFF">
 
         <LinearLayout
             android:id="@+id/SLineLayout"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
         </LinearLayout>
@@ -33,6 +33,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/bottom_ll"
         android:layout_width="match_parent"
         android:layout_height="93dp"
         android:orientation="horizontal">

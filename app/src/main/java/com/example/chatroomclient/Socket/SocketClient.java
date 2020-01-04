@@ -102,9 +102,7 @@ public class SocketClient {
             String response = reader.readLine();
             System.out.println(response);
 
-            int posi = response.indexOf("/");
-            System.out.println(posi);
-            String room_info = response.substring(0, posi);
+            String room_info = response;
             System.out.println(room_info);
 
             findInfo f = new findInfo();
