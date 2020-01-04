@@ -54,11 +54,12 @@ public class ChatSetActivity extends AppCompatActivity {
         t1.start();
         while(t1.isAlive());
         ArrayList<String> res = search_client.return_roomset();
-        int res_num = res.size(), count = 0;
+        int res_num = res.size(), count = 1;
         while(count < res_num){
             LinearLayout ll = (LinearLayout)findViewById(R.id.SLineLayout);
             TextView tv = new TextView(this);
             tv.setText(res.get(count));
+            tv.setTextSize(50);
             ll.addView(tv);
             count++;
         }
