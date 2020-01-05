@@ -95,16 +95,16 @@ public class ChatSetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        choose.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-            }
-        });
-        join.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-            }
-        });
+//        choose.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//            }
+//        });
+//        join.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//            }
+//        });
     }
 
     public int[] getAndroidScreenProperty() {
