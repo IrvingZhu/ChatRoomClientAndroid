@@ -1,4 +1,4 @@
-package com.example.chatroomclient;
+package com.example.chatroomclient.utility;
 
 //import Runnable;
 

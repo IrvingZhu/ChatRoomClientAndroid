@@ -3,7 +3,13 @@
     package="com.example.chatroomclient">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 得到屏幕正常的物理尺寸 -->
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".Myinfo_Activity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,13 +29,5 @@
         <activity android:name=".register_Activity" />
         <activity android:name=".ChatSetActivity" />
     </application>
-
-    <!-- 得到屏幕正常的物理尺寸 -->
-    <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:resizeable="true"
-        android:anyDensity="true" />
 
 </manifest>

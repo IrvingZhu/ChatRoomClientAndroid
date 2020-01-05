@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -15,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.chatroomclient.utility.MyInfoClickListener;
 import com.example.chatroomclient.utility.searchAllRoom;
 import com.example.chatroomclient.utility.searchAllUserInfo;
 
@@ -71,6 +69,10 @@ public class ChatSetActivity extends AppCompatActivity {
 
         ViewGroup.LayoutParams lp = sc.getLayoutParams();
         lp.height = screen_Height;
+
+        System.out.println("the screen height size is: " + screen_Height);
+        System.out.println("the sc height size is: " +  lp.height);
+
         sc.setLayoutParams(lp);
 
         int res_num = res.size(), count = 1;
@@ -86,13 +88,23 @@ public class ChatSetActivity extends AppCompatActivity {
         choose = findViewById(R.id.choose);
         join = findViewById(R.id.join);
 
-        MyInfoClickListener m_myinfo = new MyInfoClickListener(this.uid, this.uname, this.upassword, 0);
-        MyInfoClickListener m_choose = new MyInfoClickListener(this.uid, this.uname, this.upassword, 1);
-        MyInfoClickListener m_join = new MyInfoClickListener(this.uid, this.uname, this.upassword, 2);
-
-        myInfo.setOnClickListener(m_myinfo);
-        choose.setOnClickListener(m_choose);
-        join.setOnClickListener(m_join);
+        myInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(ChatSetActivity.this, Myinfo_Activity.class);
+                startActivity(intent);
+            }
+        });
+        choose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+            }
+        });
+        join.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+            }
+        });
     }
 
     public int[] getAndroidScreenProperty() {

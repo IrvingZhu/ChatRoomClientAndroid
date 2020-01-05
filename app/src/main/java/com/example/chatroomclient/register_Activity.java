@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.chatroomclient.utility.RegisterActivity;
+
 public class register_Activity extends AppCompatActivity {
 
     private Button register;
