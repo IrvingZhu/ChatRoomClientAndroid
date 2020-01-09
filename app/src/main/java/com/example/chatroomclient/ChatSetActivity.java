@@ -67,13 +67,17 @@ public class ChatSetActivity extends AppCompatActivity {
         int resofScreen[] = this.getAndroidScreenProperty();
         int screen_Height = resofScreen[1];
 
-        ViewGroup.LayoutParams lp = sc.getLayoutParams();
-        lp.height = screen_Height;
+        System.out.println("the Height of screen is : " + screen_Height);
+
+        ViewGroup.LayoutParams lp = bl.getLayoutParams();
+        ViewGroup.LayoutParams sc_lp = sc.getLayoutParams();
+        System.out.println("the lp height is :" + lp.height);
+        sc_lp.height = sc_lp.height - lp.height - 80;
 
         System.out.println("the screen height size is: " + screen_Height);
-        System.out.println("the sc height size is: " +  lp.height);
+        System.out.println("the sc height size is: " +  sc_lp.height);
 
-        sc.setLayoutParams(lp);
+        sc.setLayoutParams(sc_lp);
 
         int res_num = res.size(), count = 1;
         while(count < res_num){
@@ -107,7 +111,8 @@ public class ChatSetActivity extends AppCompatActivity {
         join.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-//                Intent intent = new Intent(ChatSetActivity.this, )
+                Intent intent = new Intent(ChatSetActivity.this, JoinActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -129,5 +134,28 @@ public class ChatSetActivity extends AppCompatActivity {
         resofscreen[1] = screenHeight;
 
         return resofscreen;
+    }
+
+    public int retComponentDpSize(ViewGroup.LayoutParams lp, int type){
+        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+
+//        0 represent height,1 represent width
+        if(type == 0){
+            int lp_height = lp.height;
+            float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
+
+            int component_Size = (int) (lp_height / density);
+            return component_Size;
+        }else if(type == 1){
+            int lp_width = lp.width;
+            float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
+
+            int component_Size = (int) (lp_width / density);
+            return component_Size;
+        }else{
+            return 0;
+        }
     }
 }

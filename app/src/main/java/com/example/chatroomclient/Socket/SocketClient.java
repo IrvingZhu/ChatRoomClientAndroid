@@ -99,10 +99,23 @@ public class SocketClient {
             System.out.println("Prepare to send info "+send_info);
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            String response = reader.readLine();
-            System.out.println(response);
 
-            String room_info = response;
+            boolean finished = false;
+            String room_info = new String("");
+            room_info = reader.readLine();
+//            while(!finished){
+//                String response = reader.readLine();
+//                System.out.println(response);
+//
+//                room_info = room_info + response;
+//                if(room_info.indexOf("/") != -1){
+//                    finished = true;
+//                }
+//
+//                System.out.println(room_info);
+//            }
+//
+//            room_info = room_info.substring(0, room_info.length()-1);
             System.out.println(room_info);
 
             findInfo f = new findInfo();
