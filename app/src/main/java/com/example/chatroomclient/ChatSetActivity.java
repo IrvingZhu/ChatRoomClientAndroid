@@ -85,6 +85,12 @@ public class ChatSetActivity extends AppCompatActivity {
             tv.setText(res.get(count));
             tv.setTextSize(50);
             ll.addView(tv);
+            tv.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+//                    jump to chat interface
+                }
+            })
             count++;
         }
 

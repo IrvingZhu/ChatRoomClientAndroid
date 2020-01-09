@@ -28,6 +28,8 @@ public class SocketClient {
             System.out.println("Send Successful");
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            String test = this.reader.toString();
+            System.out.println(test);
             String response = reader.readLine();
             System.out.println(response);
 
@@ -100,19 +102,22 @@ public class SocketClient {
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
-            boolean finished = false;
-            String room_info = new String("");
-            room_info = reader.readLine();
+//            char medi[] = new char[128];
+//            reader.read(medi, 0, medi.length);
+//            String room_info = new String(medi);
 //            while(!finished){
-//                String response = reader.readLine();
-//                System.out.println(response);
+            String response = reader.readLine();
+            System.out.println(response);
 //
-//                room_info = room_info + response;
-//                if(room_info.indexOf("/") != -1){
-//                    finished = true;
-//                }
+            String room_info = new String("");
+            if(response.indexOf("/") == -1){
+                room_info = room_info + response;
+            }else{
+                int posi = response.indexOf("/");
+                room_info = response.substring(0, posi);
+            }
 //
-//                System.out.println(room_info);
+//            System.out.println(room_info);
 //            }
 //
 //            room_info = room_info.substring(0, room_info.length()-1);
@@ -143,19 +148,26 @@ public class SocketClient {
             System.out.println("Send Successful");
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
             String response = reader.readLine();
             System.out.println(response);
+//
+            String user_info = new String("");
+            if(response.indexOf("/") == -1){
+                user_info = user_info + response;
+            }else{
+                int posi = response.indexOf("/");
+                user_info = response.substring(0, posi);
+            }
+
+            System.out.println(user_info);
 
             System.out.println(this.socket.isClosed());
 
-//            int posi = response.indexOf("/");
-//            System.out.println(posi);
-//            String user_info = response.substring(0, posi);
-//            System.out.println(user_info);
 
             findInfo f = new findInfo();
-            System.out.println(response);
-            ArrayList<String> res = f.findAllInfo(response);
+            System.out.println(user_info);
+            ArrayList<String> res = f.findAllInfo(user_info);
             ArrayList<String> result = new ArrayList<String>();
             for(int i = 1; i < res.size(); i++){
                 result.add(res.get(i));
