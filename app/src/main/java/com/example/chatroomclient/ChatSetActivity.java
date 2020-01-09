@@ -90,7 +90,7 @@ public class ChatSetActivity extends AppCompatActivity {
                 public void onClick(View v){
 //                    jump to chat interface
                 }
-            })
+            });
             count++;
         }
 
