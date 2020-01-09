@@ -95,16 +95,21 @@ public class ChatSetActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        choose.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//            }
-//        });
-//        join.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//            }
-//        });
+
+        choose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(ChatSetActivity.this, SearchRoom_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        join.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+//                Intent intent = new Intent(ChatSetActivity.this, )
+            }
+        });
     }
 
     public int[] getAndroidScreenProperty() {
