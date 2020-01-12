@@ -88,7 +88,8 @@ public class ChatSetActivity extends AppCompatActivity {
             tv.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-//                    jump to chat interface
+                    Intent intent = new Intent(ChatSetActivity.this, ChatActivity.class);
+                    startActivity(intent);
                 }
             });
             count++;
