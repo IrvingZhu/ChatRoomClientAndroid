@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -33,14 +34,15 @@
             android:layout_width="71dp"
             android:layout_height="37dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:text="id号"
             android:textSize="24sp"
             tools:layout_editor_absoluteX="39dp"
             tools:layout_editor_absoluteY="215dp" />
 
         <EditText
-            android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:id="@+id/myInfo_Uid"
+            android:layout_width="252dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:ems="10"
@@ -54,7 +56,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/textView7"
@@ -67,7 +70,7 @@
             tools:layout_editor_absoluteY="314dp" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/myInfo_Uname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

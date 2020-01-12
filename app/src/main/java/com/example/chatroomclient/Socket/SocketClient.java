@@ -182,4 +182,13 @@ public class SocketClient {
         }
     }
 
+    public boolean modifyInfo(String rsc, int type){
+//        type 0 is uname;
+//        type 1 is upassword;
+        switch(type){
+            case 0:
+
+        }
+    }
+
 }

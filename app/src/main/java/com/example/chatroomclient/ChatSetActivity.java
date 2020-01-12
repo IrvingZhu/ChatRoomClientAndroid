@@ -103,7 +103,10 @@ public class ChatSetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(ChatSetActivity.this, Myinfo_Activity.class);
-                startActivity(intent);
+                intent.putExtra("uid",ChatSetActivity.this.uid);
+                intent.putExtra("uname",ChatSetActivity.this.uname);
+                intent.putExtra("upassword",ChatSetActivity.this.upassword);
+                ChatSetActivity.this.startActivity(intent);
             }
         });
 

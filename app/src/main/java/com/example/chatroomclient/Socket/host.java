@@ -1,6 +1,6 @@
 package com.example.chatroomclient.Socket;
 
 public class host {
-    public String host = "10.2.213.48";
+    public String host = "192.168.2.185";
     public int port = 8888;
 }
