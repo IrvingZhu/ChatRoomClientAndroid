@@ -151,7 +151,7 @@ public class SocketClient {
 
             String response = reader.readLine();
             System.out.println(response);
-//
+
             String user_info = new String("");
             if(response.indexOf("/") == -1){
                 user_info = user_info + response;
@@ -164,11 +164,11 @@ public class SocketClient {
 
             System.out.println(this.socket.isClosed());
 
-
             findInfo f = new findInfo();
             System.out.println(user_info);
             ArrayList<String> res = f.findAllInfo(user_info);
             ArrayList<String> result = new ArrayList<String>();
+
             for(int i = 1; i < res.size(); i++){
                 result.add(res.get(i));
             }
@@ -182,12 +182,58 @@ public class SocketClient {
         }
     }
 
-    public boolean modifyInfo(String rsc, int type){
+    public boolean modifyInfo(String uid, String rsc, int type){
 //        type 0 is uname;
 //        type 1 is upassword;
-        switch(type){
-            case 0:
+        this.socket = new Socket();
+        host host = new host();
 
+        try {
+            this.socket.connect(new InetSocketAddress(host.host, host.port));
+            switch (type) {
+                case 0:
+//                    Modify [Uid] [Uname]
+                    String modname_send_info = "Modify " + uid + " " + rsc;
+                    System.out.println("Prepare to send info " + modname_send_info);
+
+                    this.socket.getOutputStream().write(modname_send_info.getBytes("gb2312"));
+                    System.out.println("Send Successful");
+
+                    break;
+                case 1:
+//                    ModPsw [Uid] [password]
+                    String modpsw_send_info = "ModPsw " + uid + rsc;
+                    System.out.println("Prepare to send info " + modpsw_send_info);
+
+                    this.socket.getOutputStream().write(modpsw_send_info.getBytes("gb2312"));
+                    System.out.println("Send Successful");
+
+                    break;
+                default:
+                    return false;
+            }
+
+            this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+            String response = reader.readLine();
+            System.out.println(response);
+
+            String return_info = new String("");
+            if(response.indexOf("/") == -1){
+                return_info = response;
+            }else{
+                int posi = response.indexOf("/");
+                return_info = response.substring(0, posi);
+            }
+
+            if(return_info.compareTo("SuccessModify") == 0 && return_info.compareTo("SuccessModPsw") == 0){
+                return true;
+            }else return false;
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 

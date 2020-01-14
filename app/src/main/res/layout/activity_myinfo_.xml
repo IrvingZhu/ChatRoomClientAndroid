@@ -83,7 +83,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/modpsw"
         android:layout_width="116dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
@@ -93,7 +93,7 @@
         tools:layout_editor_absoluteY="661dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/modinfo"
         android:layout_width="107dp"
         android:layout_height="63dp"
         android:layout_gravity="center"
