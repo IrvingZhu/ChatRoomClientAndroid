@@ -67,7 +67,10 @@ public class Myinfo_Activity extends AppCompatActivity {
         modPsw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(Myinfo_Activity.this, )
+                Intent intent = new Intent(Myinfo_Activity.this, ModifyPsw.class);
+                intent.putExtra("uid", Myinfo_Activity.this.uid);
+                intent.putExtra("upassword", Myinfo_Activity.this.upassword);
+                startActivity(intent);
             }
         });
     }

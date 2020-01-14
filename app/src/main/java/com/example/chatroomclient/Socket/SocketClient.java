@@ -202,7 +202,7 @@ public class SocketClient {
                     break;
                 case 1:
 //                    ModPsw [Uid] [password]
-                    String modpsw_send_info = "ModPsw " + uid + rsc;
+                    String modpsw_send_info = "ModPsw " + uid + " " + rsc;
                     System.out.println("Prepare to send info " + modpsw_send_info);
 
                     this.socket.getOutputStream().write(modpsw_send_info.getBytes("gb2312"));
@@ -224,9 +224,10 @@ public class SocketClient {
             }else{
                 int posi = response.indexOf("/");
                 return_info = response.substring(0, posi);
+                System.out.println(return_info);
             }
 
-            if(return_info.compareTo("SuccessModify") == 0 && return_info.compareTo("SuccessModPsw") == 0){
+            if(return_info.compareTo("SuccessModify") == 0 || return_info.compareTo("SuccessModPsw") == 0){
                 return true;
             }else return false;
 
