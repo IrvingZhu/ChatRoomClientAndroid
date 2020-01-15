@@ -2,6 +2,7 @@ package com.example.chatroomclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +13,14 @@ public class JoinActivity extends AppCompatActivity {
     private Button certify;
     private String uid;
     private String uname;
-    private String roomname;
 
     private JoinActivity(){
 //        this.uid = uid;
 //        this.uname = uname;
 //        this.roomname = roomname;
+        final Intent intent = getIntent();
+        this.uid = intent.getStringExtra("uid");
+        this.uname = intent.getStringExtra("uname");
     }
 
     @Override
@@ -31,6 +34,8 @@ public class JoinActivity extends AppCompatActivity {
         certify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String roomname = JoinActivity.this.chatroom.getText().toString();
+                String send_info = "JoinNewChatRoom " + JoinActivity.this.uid + " " + JoinActivity.this.uname + " " + roomname;
 
             }
         });
