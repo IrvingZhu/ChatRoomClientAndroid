@@ -24,6 +24,7 @@ public class ChatSetActivity extends AppCompatActivity {
     private String uid;
     private String uname;
     private String upassword;
+    private String roomName;
 
     private ImageView myInfo;
     private ImageView choose;
@@ -60,6 +61,7 @@ public class ChatSetActivity extends AppCompatActivity {
 
         ScrollView sc = (ScrollView)findViewById(R.id.chatset);
         ArrayList<String> res = search_client.return_roomset();
+
         LinearLayout ll = (LinearLayout)findViewById(R.id.SLineLayout);
         TextView top_TextView = (TextView)findViewById(R.id.textView);
         LinearLayout bl = (LinearLayout)findViewById(R.id.bottom_ll);
@@ -85,10 +87,15 @@ public class ChatSetActivity extends AppCompatActivity {
             tv.setText(res.get(count));
             tv.setTextSize(50);
             ll.addView(tv);
+            String roomname = res.get(count);
+            InitialChatRoomSet(roomname);
             tv.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
                     Intent intent = new Intent(ChatSetActivity.this, ChatActivity.class);
+                    intent.putExtra("uid", ChatSetActivity.this.uid);
+                    intent.putExtra("uname", ChatSetActivity.this.uname);
+                    intent.putExtra("roomname", ChatSetActivity.this.roomName);
                     startActivity(intent);
                 }
             });
@@ -96,7 +103,6 @@ public class ChatSetActivity extends AppCompatActivity {
         }
 
         myInfo = findViewById(R.id.myinfo);
-        choose = findViewById(R.id.choose);
         join = findViewById(R.id.join);
 
         myInfo.setOnClickListener(new View.OnClickListener(){
@@ -107,14 +113,6 @@ public class ChatSetActivity extends AppCompatActivity {
                 intent.putExtra("uname",ChatSetActivity.this.uname);
                 intent.putExtra("upassword",ChatSetActivity.this.upassword);
                 ChatSetActivity.this.startActivity(intent);
-            }
-        });
-
-        choose.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(ChatSetActivity.this, SearchRoom_Activity.class);
-                startActivity(intent);
             }
         });
 
@@ -169,5 +167,9 @@ public class ChatSetActivity extends AppCompatActivity {
         }else{
             return 0;
         }
+    }
+
+    private void InitialChatRoomSet(String res){
+        this.roomName = res;
     }
 }

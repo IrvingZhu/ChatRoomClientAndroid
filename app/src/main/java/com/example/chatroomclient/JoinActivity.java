@@ -17,7 +17,7 @@ public class JoinActivity extends AppCompatActivity {
     private String uid;
     private String uname;
 
-    private JoinActivity(){
+    private void Transfer_JoinActivity(){
 //        this.uid = uid;
 //        this.uname = uname;
 //        this.roomname = roomname;
@@ -30,6 +30,8 @@ public class JoinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+
+        this.Transfer_JoinActivity();
 
         chatroom = (EditText) findViewById(R.id.chatroomname);
         certify = (Button) findViewById(R.id.join);
@@ -48,6 +50,11 @@ public class JoinActivity extends AppCompatActivity {
                 boolean res = j.return_res();
                 if(res == true){
 //                  join and chat;
+                    Intent intent = new Intent(JoinActivity.this, ChatActivity.class);
+                    intent.putExtra("uid", JoinActivity.this.uid);
+                    intent.putExtra("uname", JoinActivity.this.uname);
+                    intent.putExtra("roomname", roomname);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(JoinActivity.this, "加入失败，不存在此聊天室或网络错误" , Toast.LENGTH_LONG).show();
                 }

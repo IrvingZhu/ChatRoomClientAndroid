@@ -18,10 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ModifyPsw"></activity>
+        <activity android:name=".createRoom"></activity>
+        <activity android:name=".ModifyPsw" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".JoinActivity" />
-        <activity android:name=".SearchRoom_Activity" />
         <activity android:name=".Myinfo_Activity" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".createRoom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:gravity="center_horizontal"
+            android:text="创建聊天室"
+            android:textSize="36dp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/chatroomname"
+            android:layout_width="350dp"
+            android:layout_height="80dp"
+            android:hint="请输入聊天室名字"
+            android:textSize="28dp">
+        </EditText>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/join"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:text="创建"
+        android:textSize="40dp" />
+
+</LinearLayout>
