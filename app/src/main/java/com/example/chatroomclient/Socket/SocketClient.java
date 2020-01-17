@@ -272,4 +272,37 @@ public class SocketClient {
         }
     }
 
+    public boolean createRoom(String send_info){
+        this.socket = new Socket();
+        host host = new host();
+
+        try {
+            this.socket.connect(new InetSocketAddress(host.host, host.port));
+            System.out.println("Prepare to send info " + send_info);
+
+            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            System.out.println("Send Successful");
+
+            this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+            String response = reader.readLine();
+            System.out.println(response);
+
+            String return_info = new String("");
+            if(response.indexOf("/") == -1){
+                return_info = response;
+            }else{
+                int posi = response.indexOf("/");
+                return_info = response.substring(0, posi);
+                System.out.println(return_info);
+            }
+
+            if(return_info.compareTo("SuccessCre") == 0){
+                return true;
+            }else return false;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

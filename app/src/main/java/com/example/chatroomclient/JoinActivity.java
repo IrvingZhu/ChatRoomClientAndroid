@@ -50,6 +50,7 @@ public class JoinActivity extends AppCompatActivity {
                 boolean res = j.return_res();
                 if(res == true){
 //                  join and chat;
+                    System.out.println("Immediately jump to next page...");
                     Intent intent = new Intent(JoinActivity.this, ChatActivity.class);
                     intent.putExtra("uid", JoinActivity.this.uid);
                     intent.putExtra("uname", JoinActivity.this.uname);

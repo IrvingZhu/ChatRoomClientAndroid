@@ -27,7 +27,7 @@ public class ChatSetActivity extends AppCompatActivity {
     private String roomName;
 
     private ImageView myInfo;
-    private ImageView choose;
+    private ImageView create;
     private ImageView join;
 
     public void Transfer_ChatSetActivity(){
@@ -104,6 +104,7 @@ public class ChatSetActivity extends AppCompatActivity {
 
         myInfo = findViewById(R.id.myinfo);
         join = findViewById(R.id.join);
+        create = findViewById(R.id.create);
 
         myInfo.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -120,6 +121,16 @@ public class ChatSetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(ChatSetActivity.this, JoinActivity.class);
+                intent.putExtra("uid", ChatSetActivity.this.uid);
+                intent.putExtra("uname", ChatSetActivity.this.uname);
+                startActivity(intent);
+            }
+        });
+
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatSetActivity.this, createRoom.class);
                 intent.putExtra("uid", ChatSetActivity.this.uid);
                 intent.putExtra("uname", ChatSetActivity.this.uname);
                 startActivity(intent);
