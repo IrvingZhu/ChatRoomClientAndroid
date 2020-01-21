@@ -21,7 +21,7 @@ public class NetworkService {
         void onConnected(String host, int port);        //连接成功
         void onConnectFailed(String host, int port);    //连接失败
         void onDisconnected();                          //已经断开连接
-        void onMessageSent(String name, String msg);    //消息已经发出
+        void onMessageSent(String RoomName, String name, String msg);    //消息已经发出
         void onMessageReceived(ArrayList<String> res);//收到消息
     }
 
@@ -140,7 +140,7 @@ public class NetworkService {
             outputStream.flush();
             // 通知外界消息已发送
             if (callback != null) {
-                callback.onMessageSent(name, msg);
+                callback.onMessageSent(chatRoom, name, msg);
             }
         } catch (IOException e) {
             e.printStackTrace();
