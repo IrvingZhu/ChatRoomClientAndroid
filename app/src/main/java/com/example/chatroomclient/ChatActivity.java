@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
     private NetworkService networkService;
+    private ListView lv_chat_dialog;
     private String host;
     private int port;
     private Button send;
@@ -38,11 +41,15 @@ public class ChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView info_input = (TextView) findViewById(R.id.et_chat_message);
+                EditText info_input = (EditText) findViewById(R.id.et_chat_message);
+                lv_chat_dialog = (ListView) findViewById(R.id.lv_chat_dialog);
 
                 String send_info = info_input.getText().toString();
-
-                ChatActivity.this.networkService.sendMessage(ChatActivity.this.this_room, ChatActivity.this.name, send_info);
+                if(send_info.isEmpty() == true){
+                    Toast.makeText(ChatActivity.this, "发送内容不能为空", Toast.LENGTH_LONG).show();
+                }else{
+                    ChatActivity.this.networkService.sendMessage(ChatActivity.this.this_room, ChatActivity.this.name, send_info);
+                }
             }
         });
     }
@@ -64,18 +71,18 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onDisconnected(){
-
+                System.out.println("The client is disconnecting...");
             }
 
             @Override
             public void onMessageSent(String RoomName, String name, String msg){
                 System.out.println(name + " send info " + msg);
-
+//                the item add your send info
             }
 
             @Override
             public void onMessageReceived(ArrayList<String> res){
-
+//                the item add your receive info
             }
         });
     }
