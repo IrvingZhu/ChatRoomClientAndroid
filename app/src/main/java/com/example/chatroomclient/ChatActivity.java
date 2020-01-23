@@ -3,6 +3,7 @@ package com.example.chatroomclient;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,23 @@ public class ChatActivity extends AppCompatActivity {
     private String name;
     private String message;
     private List<PersonChat> personChats = new ArrayList<PersonChat>();
+
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            int what = msg.what;
+            switch (what) {
+                case 1:
+                    /**
+                     * ListView条目控制在最后一行
+                     */
+                    lv_chat_dialog.setSelection(personChats.size());
+                    break;
+
+                default:
+                    break;
+            }
+        };
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +102,32 @@ public class ChatActivity extends AppCompatActivity {
                 System.out.println(name + " send info " + msg);
 //                the item add your send info
                 PersonChat p = new PersonChat();
-                p.setMeSend(false);
+                p.setMeSend(true);
                 ChatActivity.this.personChats.add(p);
 
+                p.setName(name);
+                p.setChatMessage(msg);
 
+                EditText info_input = (EditText) findViewById(R.id.et_chat_message);
+                info_input.setText("");
+
+                adapter.notifyDataSetChanged();
+                handler.sendEmptyMessage(1);
             }
 
             @Override
             public void onMessageReceived(ArrayList<String> res){
+                System.out.println(res.get(1) + " receive info " + res.get(2));
 //                the item add your receive info
+                PersonChat p = new PersonChat();
+                p.setMeSend(false);
+                ChatActivity.this.personChats.add(p);
+
+                p.setName(res.get(1));
+                p.setChatMessage(res.get(2));
+
+                adapter.notifyDataSetChanged();
+                handler.sendEmptyMessage(1);
             }
         });
     }
