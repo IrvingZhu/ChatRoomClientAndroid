@@ -83,6 +83,11 @@ public class ChatActivity extends AppCompatActivity {
             public void onMessageSent(String RoomName, String name, String msg){
                 System.out.println(name + " send info " + msg);
 //                the item add your send info
+                PersonChat p = new PersonChat();
+                p.setMeSend(false);
+                ChatActivity.this.personChats.add(p);
+
+
             }
 
             @Override
