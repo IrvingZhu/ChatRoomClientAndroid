@@ -12,12 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatroomclient.ChatServicePackage.NetworkService;
+import com.example.chatroomclient.Chatutil.ChatAdapter;
+import com.example.chatroomclient.Chatutil.PersonChat;
 import com.example.chatroomclient.Socket.host;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     private NetworkService networkService;
+    private ChatAdapter adapter;
     private ListView lv_chat_dialog;
     private String host;
     private int port;
@@ -25,6 +29,7 @@ public class ChatActivity extends AppCompatActivity {
     private String this_room;
     private String name;
     private String message;
+    private List<PersonChat> personChats = new ArrayList<PersonChat>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
