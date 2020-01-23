@@ -59,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
         this.port = host.port;
 
         this.initNetworkService();
+        this.networkService.connect(this.host, this.port, this.name, this.this_room);
 
         send = (Button) findViewById(R.id.btn_chat_message_send);
         send.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +84,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onConnected(String host, int port){
                 System.out.println("The client has connected to the " + host + ":" + port);
-                Toast.makeText(ChatActivity.this, "连接成功，您可以开始聊天了", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -117,17 +117,20 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onMessageReceived(ArrayList<String> res){
-                System.out.println(res.get(1) + " receive info " + res.get(2));
+                if(res.size() == 1) Toast.makeText(ChatActivity.this, res.get(0), Toast.LENGTH_LONG).show();
+                else{
+                    System.out.println(res.get(1) + " receive info " + res.get(2));
 //                the item add your receive info
-                PersonChat p = new PersonChat();
-                p.setMeSend(false);
-                ChatActivity.this.personChats.add(p);
+                    PersonChat p = new PersonChat();
+                    p.setMeSend(false);
+                    ChatActivity.this.personChats.add(p);
 
-                p.setName(res.get(1));
-                p.setChatMessage(res.get(2));
+                    p.setName(res.get(1));
+                    p.setChatMessage(res.get(2));
 
-                adapter.notifyDataSetChanged();
-                handler.sendEmptyMessage(1);
+                    adapter.notifyDataSetChanged();
+                    handler.sendEmptyMessage(1);
+                }
             }
         });
     }

@@ -54,10 +54,17 @@ public class NetworkService {
 
                     while (true) {
                         String s = inputStream.readUTF().toString();
-                        ChatMessageExtract Chat_util = new ChatMessageExtract();
-                        ArrayList<String> result = Chat_util.Extract(s);
-                        if (callback != null) {
+                        if(s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0){
+                            String res = new String("连接成功，可以开始聊天了");
+                            ArrayList<String> result = new ArrayList<String>();
+                            result.add(res);
                             callback.onMessageReceived(result);
+                        }else{
+                            ChatMessageExtract Chat_util = new ChatMessageExtract();
+                            ArrayList<String> result = Chat_util.Extract(s);
+                            if (callback != null) {
+                                callback.onMessageReceived(result);
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -68,7 +75,7 @@ public class NetworkService {
         (new Thread(listening)).start();
     }
 
-    public void connect(String host, int port) {
+    public void connect(String host, int port, String userName, String RoomName) {
         try {
             // 创建套接字对象，与服务器建立连接
             this.socket = new Socket(host, port);
@@ -77,8 +84,13 @@ public class NetworkService {
             if (this.callback != null) {
                 this.callback.onConnected(host, port);
             }
+
+            String send_info = "AccessChatRoom " + userName + " " + RoomName;
+            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
+
             // 开始侦听是否有聊天消息到来
             this.beginListening();
+
         } catch (IOException e) {
             // 连接服务器失败
             this.isConnected = false;
