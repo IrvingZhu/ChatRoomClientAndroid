@@ -2,8 +2,11 @@ package com.example.chatroomclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -28,8 +31,8 @@ public class ChatActivity extends AppCompatActivity {
     private int port;
     private Button send;
     private String this_room;
+    private String uid;
     private String name;
-    private String message;
     private List<PersonChat> personChats = new ArrayList<PersonChat>();
 
     private Handler handler = new Handler() {
@@ -53,6 +56,17 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+
+        if (Build.VERSION.SDK_INT >= 11) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+        }
+
+        final Intent intent = getIntent();
+        this.uid = intent.getStringExtra("uid");
+        this.name = intent.getStringExtra("uname");
+        this.this_room = intent.getStringExtra("roomname");
 
         host host = new host();
         this.host = host.host;
