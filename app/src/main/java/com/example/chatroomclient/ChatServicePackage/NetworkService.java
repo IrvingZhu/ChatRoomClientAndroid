@@ -108,6 +108,8 @@ public class NetworkService {
     public void disconnect() {
         try {
             if (socket != null) {
+                String send_info = "Leave";
+                this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
                 socket.close();
             }
             if (inputStream!= null) {
