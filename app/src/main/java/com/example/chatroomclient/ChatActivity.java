@@ -153,7 +153,13 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode == KeyEvent.KEYCODE_BACK && this.networkService.isConnected()){
             networkService.disconnect();
+            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
+            startActivity(intent);
             return true;
-        }else return false;
+        }else {
+            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
+            startActivity(intent);
+            return false;
+        }
     }
 }

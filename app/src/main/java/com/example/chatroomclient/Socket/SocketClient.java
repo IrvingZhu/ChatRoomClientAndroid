@@ -20,6 +20,8 @@ public class SocketClient {
         host host = new host();
 //        this.socket.connect(new InetSocketAddress(host, port));
         try {
+            System.out.println("Prepare to connect to " + host.host + ":" + host.port);
+
             this.socket.connect(new InetSocketAddress(host.host, host.port));
             String send_info = "Login " + res_uname + " " + res_upassword;
             System.out.println("Prepare to send info "+send_info);
