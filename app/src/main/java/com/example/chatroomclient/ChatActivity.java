@@ -57,7 +57,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-
         if (Build.VERSION.SDK_INT >= 11) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
@@ -67,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
         this.uid = intent.getStringExtra("uid");
         this.name = intent.getStringExtra("uname");
         this.this_room = intent.getStringExtra("roomname");
+        this.adapter = new ChatAdapter(this, personChats);
 
         host host = new host();
         this.host = host.host;
@@ -113,7 +113,7 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onMessageSent(String RoomName, String name, String msg){
-                System.out.println(name + " send info " + msg);
+                System.out.println(name + " send info :" + msg);
 //                the item add your send info
                 PersonChat p = new PersonChat();
                 p.setMeSend(true);

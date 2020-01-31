@@ -1,5 +1,8 @@
 package com.example.chatroomclient.ChatServicePackage;
 
+import android.os.Build;
+import android.os.StrictMode;
+
 import com.example.chatroomclient.utility.ChatMessageExtract;
 
 import java.io.DataInputStream;
@@ -150,9 +153,10 @@ public class NetworkService {
 
         try {
             // 将消息写入套接字的输出流
-            outputStream = new DataOutputStream(socket.getOutputStream());
-            outputStream.writeUTF("Chat " + chatRoom + " " + name + " " + msg);
-            outputStream.flush();
+            String send_info = "Chat " + chatRoom + " " + name + " " + msg;
+            System.out.println(send_info);
+            socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            System.out.println("Send Successful");
             // 通知外界消息已发送
             if (callback != null) {
                 callback.onMessageSent(chatRoom, name, msg);
