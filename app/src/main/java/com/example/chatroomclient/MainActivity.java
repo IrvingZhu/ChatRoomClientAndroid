@@ -29,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
 //                find info from button
                 EditText et_uname = findViewById(R.id.UserName);
                 EditText et_upassword = findViewById(R.id.Password);
+                EditText ip = findViewById(R.id.ip);
                 String res_uname = et_uname.getText().toString();
                 String res_upassword = et_upassword.getText().toString();
+                String host_addr = ip.getText().toString();
 
 //                query to server database
                 login_Query query = new login_Query();
-                query.setThisQueryInfo(res_uname, res_upassword);
+                query.setThisQueryInfo(res_uname, res_upassword, host_addr);
                 Thread t1 = new Thread(query);
                 t1.start();
 //                the thread is alive,if ture,wait for this thread.
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, ChatSetActivity.class);
                     intent.putExtra("uname", res_uname);
                     intent.putExtra("upassword", res_upassword);
+                    intent.putExtra("ip_addr", host_addr);
                     MainActivity.this.startActivity(intent);
                 }else{
 //                    fault, put up a new reminder into page

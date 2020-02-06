@@ -33,6 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private String this_room;
     private String uid;
     private String name;
+    private String psw_temp; // this is not to use
     private List<PersonChat> personChats = new ArrayList<PersonChat>();
 
     private Handler handler = new Handler() {
@@ -53,6 +54,26 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK && this.networkService.isConnected()){
+            networkService.leave(this.this_room);
+            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
+            intent.putExtra("uname", this.name);
+            System.out.println("name :" + this.name);
+            intent.putExtra("upassword", this.psw_temp);
+            System.out.println("psw :" + this.psw_temp);
+            startActivity(intent);
+            return true;
+        }else {
+            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
+            intent.putExtra("uname", this.name);
+            intent.putExtra("upassword", this.psw_temp);
+            startActivity(intent);
+            return false;
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
@@ -66,6 +87,7 @@ public class ChatActivity extends AppCompatActivity {
         this.uid = intent.getStringExtra("uid");
         this.name = intent.getStringExtra("uname");
         this.this_room = intent.getStringExtra("roomname");
+        this.psw_temp = intent.getStringExtra("upassword");
         this.adapter = new ChatAdapter(this, personChats);
 
         host host = new host();
@@ -147,19 +169,5 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if(keyCode == KeyEvent.KEYCODE_BACK && this.networkService.isConnected()){
-            networkService.disconnect();
-            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
-            startActivity(intent);
-            return true;
-        }else {
-            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
-            startActivity(intent);
-            return false;
-        }
     }
 }

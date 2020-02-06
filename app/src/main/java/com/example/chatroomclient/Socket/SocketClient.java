@@ -14,10 +14,21 @@ public class SocketClient {
     private static Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
+    private static host host;
+
+    public SocketClient(){}
+
+    public SocketClient(String host_addr){
+        this.host = new host();
+        this.host.setHost(host_addr);
+    }
+
+    public void setHostAddr(String host_addr){
+        this.host.setHost(host_addr);
+    }
 
     public boolean Login(String res_uname, String res_upassword) {
         this.socket = new Socket();
-        host host = new host();
 //        this.socket.connect(new InetSocketAddress(host, port));
         try {
             System.out.println("Prepare to connect to " + host.host + ":" + host.port);
@@ -58,7 +69,6 @@ public class SocketClient {
 
     public boolean Register(String u_name, String u_password){
         this.socket = new Socket();
-        host host = new host();
         try{
             this.socket.connect(new InetSocketAddress(host.host, host.port));
             String send_info = "Register " + u_name + " " + u_password;
@@ -93,7 +103,6 @@ public class SocketClient {
 
     public ArrayList<String> searchAllRoom(String uid){
         this.socket = new Socket();
-        host host = new host();
 
         try{
             this.socket.connect(new InetSocketAddress(host.host, host.port));
@@ -139,7 +148,6 @@ public class SocketClient {
 
     public ArrayList<String> searchAllUserInfo(String uname){
         this.socket = new Socket();
-        host host = new host();
 
         try {
             this.socket.connect(new InetSocketAddress(host.host, host.port));
@@ -188,7 +196,6 @@ public class SocketClient {
 //        type 0 is uname;
 //        type 1 is upassword;
         this.socket = new Socket();
-        host host = new host();
 
         try {
             this.socket.connect(new InetSocketAddress(host.host, host.port));
@@ -242,7 +249,6 @@ public class SocketClient {
 
     public boolean joinedRoom(String send_info){
         this.socket = new Socket();
-        host host = new host();
 
         try {
             this.socket.connect(new InetSocketAddress(host.host, host.port));
@@ -276,7 +282,6 @@ public class SocketClient {
 
     public boolean createRoom(String send_info){
         this.socket = new Socket();
-        host host = new host();
 
         try {
             this.socket.connect(new InetSocketAddress(host.host, host.port));

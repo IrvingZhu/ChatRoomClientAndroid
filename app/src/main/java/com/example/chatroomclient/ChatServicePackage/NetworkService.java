@@ -22,13 +22,18 @@ import java.util.ArrayList;
 public class NetworkService {
     public interface Callback {
         void onConnected(String host, int port);        //连接成功
+
         void onConnectFailed(String host, int port);    //连接失败
+
         void onDisconnected();                          //已经断开连接
+
         void onMessageSent(String RoomName, String name, String msg);    //消息已经发出
+
         void onMessageReceived(ArrayList<String> res);//收到消息
     }
 
     private Callback callback;
+
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
@@ -44,8 +49,8 @@ public class NetworkService {
 
     /**
      * 连接到服务器
-     *  host 服务器地址
-     *  port 服务器端口
+     * host 服务器地址
+     * port 服务器端口
      */
 
     private void beginListening() {
@@ -57,12 +62,12 @@ public class NetworkService {
 
                     while (true) {
                         String s = inputStream.readUTF().toString();
-                        if(s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0){
+                        if (s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0) {
                             String res = new String("连接成功，可以开始聊天了");
                             ArrayList<String> result = new ArrayList<String>();
                             result.add(res);
                             callback.onMessageReceived(result);
-                        }else{
+                        } else {
                             ChatMessageExtract Chat_util = new ChatMessageExtract();
                             ArrayList<String> result = Chat_util.Extract(s);
                             if (callback != null) {
@@ -115,7 +120,7 @@ public class NetworkService {
                 this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
                 socket.close();
             }
-            if (inputStream!= null) {
+            if (inputStream != null) {
                 inputStream.close();
             }
             if (outputStream != null) {
@@ -130,17 +135,21 @@ public class NetworkService {
             e.printStackTrace();
         }
     }
+
     /**
      * 是否已经连接到服务器
+     *
      * @return true为已连接，false为未连接
      */
     public boolean isConnected() {
         return isConnected;
     }
+
     /**
      * 发送聊天消息
+     *
      * @param name 用户名
-     * @param msg 消息内容
+     * @param msg  消息内容
      */
     public void sendMessage(String chatRoom, String name, String msg) {
         // 检查参数合法性
@@ -162,6 +171,22 @@ public class NetworkService {
                 callback.onMessageSent(chatRoom, name, msg);
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void leave(String chatRoom) {
+        if(socket == null)
+            return;
+
+        try{
+            String send_info = "Leave " + chatRoom;
+            System.out.println("Prepare to leave " + chatRoom);
+            socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            System.out.println("Send successful");
+
+            this.disconnect();
+        }catch(Exception e){
             e.printStackTrace();
         }
     }

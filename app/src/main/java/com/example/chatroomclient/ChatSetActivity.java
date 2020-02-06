@@ -30,7 +30,7 @@ public class ChatSetActivity extends AppCompatActivity {
     private ImageView create;
     private ImageView join;
 
-    public void Transfer_ChatSetActivity(){
+    private void Transfer_ChatSetActivity(){
         final Intent intent = getIntent();
         this.uname = intent.getStringExtra("uname");
         this.upassword = intent.getStringExtra("upassword");
@@ -97,6 +97,8 @@ public class ChatSetActivity extends AppCompatActivity {
                     intent.putExtra("uid", ChatSetActivity.this.uid);
                     intent.putExtra("uname", ChatSetActivity.this.uname);
                     intent.putExtra("roomname", ChatSetActivity.this.roomName);
+//                    contemporary variable to chat room
+                    intent.putExtra("upassword",ChatSetActivity.this.upassword);
                     startActivity(intent);
                 }
             });
@@ -124,6 +126,7 @@ public class ChatSetActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChatSetActivity.this, JoinActivity.class);
                 intent.putExtra("uid", ChatSetActivity.this.uid);
                 intent.putExtra("uname", ChatSetActivity.this.uname);
+                intent.putExtra("upassword",ChatSetActivity.this.upassword);
                 startActivity(intent);
             }
         });
@@ -134,6 +137,7 @@ public class ChatSetActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChatSetActivity.this, createRoom.class);
                 intent.putExtra("uid", ChatSetActivity.this.uid);
                 intent.putExtra("uname", ChatSetActivity.this.uname);
+                intent.putExtra("upassword",ChatSetActivity.this.upassword);
                 startActivity(intent);
             }
         });
