@@ -19,11 +19,11 @@ import java.util.ArrayList;
 // format: "Chat [ChatRoom] [UserName] [Info]"
 // [Info] = 4 byte length info + 32 byte of chat userName + 1024 byte of chat words.
 
-public class NetworkService {
+public class NetworkService implements Runnable {
     public interface Callback {
         void onConnected(String host, int port);        //连接成功
 
-        void onConnectFailed(String host, int port);    //连接失败
+        void onConnectFailed();    //连接失败
 
         void onDisconnected();                          //已经断开连接
 
@@ -47,6 +47,7 @@ public class NetworkService {
     // 当前连接状态的标记变量
     private boolean isConnected = false;
 
+
     /**
      * 连接到服务器
      * host 服务器地址
@@ -63,10 +64,12 @@ public class NetworkService {
                     while (true) {
                         String s = inputStream.readUTF().toString();
                         if (s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0) {
-                            String res = new String("连接成功，可以开始聊天了");
-                            ArrayList<String> result = new ArrayList<String>();
-                            result.add(res);
-                            callback.onMessageReceived(result);
+//                            String res = new String("连接成功，可以开始聊天了");
+//                            ArrayList<String> result = new ArrayList<String>();
+//                            result.add(res);
+                            String host = NetworkService.this.socket.getLocalSocketAddress().toString();
+                            int port = NetworkService.this.socket.getPort();
+                            callback.onConnected(host, port);
                         } else {
                             ChatMessageExtract Chat_util = new ChatMessageExtract();
                             ArrayList<String> result = Chat_util.Extract(s);
@@ -96,15 +99,12 @@ public class NetworkService {
             String send_info = "AccessChatRoom " + userName + " " + RoomName;
             this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
 
-            // 开始侦听是否有聊天消息到来
-            this.beginListening();
-
         } catch (IOException e) {
             // 连接服务器失败
             this.isConnected = false;
             // 通知外界连接失败
             if (callback != null) {
-                callback.onConnectFailed(host, port);
+                callback.onConnectFailed();
             }
             e.printStackTrace();
         }
@@ -116,8 +116,6 @@ public class NetworkService {
     public void disconnect() {
         try {
             if (socket != null) {
-                String send_info = "Leave";
-                this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
                 socket.close();
             }
             if (inputStream != null) {
@@ -189,5 +187,11 @@ public class NetworkService {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void run(){
+        // 开始侦听是否有聊天消息到来
+        this.beginListening();
     }
 }

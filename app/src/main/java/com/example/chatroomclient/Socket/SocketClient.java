@@ -109,7 +109,7 @@ public class SocketClient {
             String send_info = "SearchUserAllJoinedRoom " + uid;
 
             this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
-            System.out.println("Prepare to send info "+send_info);
+            System.out.println("Prepare to send info " + send_info);
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 

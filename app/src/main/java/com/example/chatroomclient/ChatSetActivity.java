@@ -32,6 +32,7 @@ public class ChatSetActivity extends AppCompatActivity {
 
     private void Transfer_ChatSetActivity(){
         final Intent intent = getIntent();
+        this.uid = intent.getStringExtra("uid");
         this.uname = intent.getStringExtra("uname");
         this.upassword = intent.getStringExtra("upassword");
 
@@ -60,9 +61,9 @@ public class ChatSetActivity extends AppCompatActivity {
         t1.start();
         while(t1.isAlive());
 
-        ScrollView sc = (ScrollView)findViewById(R.id.chatset);
         ArrayList<String> res = search_client.return_roomset();
 
+        ScrollView sc = (ScrollView)findViewById(R.id.chatset);
         LinearLayout ll = (LinearLayout)findViewById(R.id.SLineLayout);
         TextView top_TextView = (TextView)findViewById(R.id.textView);
         LinearLayout bl = (LinearLayout)findViewById(R.id.bottom_ll);

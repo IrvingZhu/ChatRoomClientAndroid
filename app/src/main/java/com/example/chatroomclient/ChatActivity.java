@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class ChatActivity extends AppCompatActivity {
     private String host;
     private int port;
     private Button send;
+    private ImageView return_btn;
     private String this_room;
     private String uid;
     private String name;
@@ -52,26 +54,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
     };
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if(keyCode == KeyEvent.KEYCODE_BACK && this.networkService.isConnected()){
-            networkService.leave(this.this_room);
-            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
-            intent.putExtra("uname", this.name);
-            System.out.println("name :" + this.name);
-            intent.putExtra("upassword", this.psw_temp);
-            System.out.println("psw :" + this.psw_temp);
-            startActivity(intent);
-            return true;
-        }else {
-            Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
-            intent.putExtra("uname", this.name);
-            intent.putExtra("upassword", this.psw_temp);
-            startActivity(intent);
-            return false;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +94,27 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+        this.return_btn = findViewById(R.id.return_button);
+        this.return_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ChatActivity.this.networkService.isConnected()){
+                    networkService.leave(ChatActivity.this.this_room);
+                    Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
+                    intent.putExtra("uid", ChatActivity.this.uid);
+                    intent.putExtra("uname", ChatActivity.this.name);
+                    intent.putExtra("upassword", ChatActivity.this.psw_temp);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(ChatActivity.this, ChatSetActivity.class);
+                    intent.putExtra("uid", ChatActivity.this.uid);
+                    intent.putExtra("uname", ChatActivity.this.name);
+                    intent.putExtra("upassword", ChatActivity.this.psw_temp);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     private void initNetworkService(){
@@ -120,10 +123,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onConnected(String host, int port){
                 System.out.println("The client has connected to the " + host + ":" + port);
+                Toast.makeText(ChatActivity.this, "聊天室已连接到 " + host + ":" + port, Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onConnectFailed(String host, int port){
+            public void onConnectFailed(){
                 System.out.println("The client has failed to connect to server");
                 Toast.makeText(ChatActivity.this, "连接失败，请检查网络设置", Toast.LENGTH_LONG).show();
             }
