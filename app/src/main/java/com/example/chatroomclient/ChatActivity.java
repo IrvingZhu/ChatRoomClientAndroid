@@ -9,15 +9,17 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatroomclient.ChatServicePackage.NetworkService;
-import com.example.chatroomclient.Chatutil.ChatAdapter;
+//import com.example.chatroomclient.Chatutil.ChatAdapter;
 import com.example.chatroomclient.Chatutil.PersonChat;
 import com.example.chatroomclient.Socket.host;
 
@@ -26,8 +28,7 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     private NetworkService networkService;
-    private ChatAdapter adapter;
-    private ListView lv_chat_dialog;
+    private LinearLayout chat_dialog;
     private String host;
     private int port;
     private Button send;
@@ -36,24 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     private String uid;
     private String name;
     private String psw_temp; // this is not to use
-    private List<PersonChat> personChats = new ArrayList<PersonChat>();
-
-    private Handler handler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            int what = msg.what;
-            switch (what) {
-                case 1:
-                    /**
-                     * ListView条目控制在最后一行
-                     */
-                    lv_chat_dialog.setSelection(personChats.size());
-                    break;
-
-                default:
-                    break;
-            }
-        };
-    };
+    private PersonChat my_send;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +54,7 @@ public class ChatActivity extends AppCompatActivity {
         this.name = intent.getStringExtra("uname");
         this.this_room = intent.getStringExtra("roomname");
         this.psw_temp = intent.getStringExtra("upassword");
-        this.adapter = new ChatAdapter(this, personChats);
+//        this.adapter = new ChatAdapter(this, personChats);
 
         host host = new host();
         this.host = host.host;
@@ -84,7 +68,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText info_input = (EditText) findViewById(R.id.et_chat_message);
-                lv_chat_dialog = (ListView) findViewById(R.id.lv_chat_dialog);
 
                 String send_info = info_input.getText().toString();
                 if(send_info.isEmpty() == true){
@@ -143,33 +126,43 @@ public class ChatActivity extends AppCompatActivity {
 //                the item add your send info
                 PersonChat p = new PersonChat();
                 p.setMeSend(true);
-                ChatActivity.this.personChats.add(p);
 
                 p.setName(name);
                 p.setChatMessage(msg);
+                ChatActivity.this.my_send = p;
+
+                chat_dialog = findViewById(R.id.chat_dialog_ll);
+                TextView t = new TextView(ChatActivity.this);
+                t.setText("(Your)" + name + ":" + msg);
+                t.setTextSize(30);
+                chat_dialog.addView(t);
 
                 EditText info_input = (EditText) findViewById(R.id.et_chat_message);
                 info_input.setText("");
-
-                adapter.notifyDataSetChanged();
-                handler.sendEmptyMessage(1);
             }
 
             @Override
             public void onMessageReceived(ArrayList<String> res){
                 if(res.size() == 1) Toast.makeText(ChatActivity.this, res.get(0), Toast.LENGTH_LONG).show();
                 else{
-                    System.out.println(res.get(1) + " receive info " + res.get(2));
+                    System.out.println(res.get(0) + " receive info " + res.get(1));
 //                the item add your receive info
                     PersonChat p = new PersonChat();
                     p.setMeSend(false);
-                    ChatActivity.this.personChats.add(p);
+//                    ChatActivity.this.personChats.add(p);
 
-                    p.setName(res.get(1));
-                    p.setChatMessage(res.get(2));
+                    p.setName(res.get(0));
+                    p.setChatMessage(res.get(1));
 
-                    adapter.notifyDataSetChanged();
-                    handler.sendEmptyMessage(1);
+                    if(p.getName().compareTo(ChatActivity.this.my_send.getName()) != 0 &&
+                        p.getChatMessage().compareTo(ChatActivity.this.my_send.getChatMessage()) != 0)
+                    {
+                        chat_dialog = findViewById(R.id.chat_dialog_ll);
+                        TextView t = new TextView(ChatActivity.this);
+                        t.setText(res.get(0) + ":" + res.get(1));
+                        t.setTextSize(30);
+                        chat_dialog.addView(t);
+                    }
                 }
             }
         });

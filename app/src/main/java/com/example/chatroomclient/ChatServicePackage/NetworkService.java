@@ -98,6 +98,7 @@ public class NetworkService implements Runnable {
 
             String send_info = "AccessChatRoom " + userName + " " + RoomName;
             this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            this.beginListening();
 
         } catch (IOException e) {
             // 连接服务器失败

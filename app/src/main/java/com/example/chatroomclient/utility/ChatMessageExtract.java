@@ -8,11 +8,9 @@ public class ChatMessageExtract {
         ArrayList<String> res = new ArrayList<String>();
 //        handle the information
 
-        String head = src.substring(0, 3);
-        String user = src.substring(4, 31);
+        String user = src.substring(0, 31);
         String info = src.substring(32);
 
-        res.add(head);
         res.add(user);
         res.add(info);
 
