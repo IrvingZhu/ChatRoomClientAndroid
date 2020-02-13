@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
@@ -94,13 +95,13 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onConnected(String host, int port){
                 System.out.println("The client has connected to the " + host + ":" + port);
-                Toast.makeText(ChatActivity.this, "聊天室已连接到 " + host + ":" + port, Toast.LENGTH_LONG).show();
+//                Toast.makeText(ChatActivity.this, "聊天室已连接到 " + host + ":" + port, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onConnectFailed(){
                 System.out.println("The client has failed to connect to server");
-                Toast.makeText(ChatActivity.this, "连接失败，请检查网络设置", Toast.LENGTH_LONG).show();
+//                Toast.makeText(ChatActivity.this, "连接失败，请检查网络设置", Toast.LENGTH_LONG).show();
             }
 
             @Override

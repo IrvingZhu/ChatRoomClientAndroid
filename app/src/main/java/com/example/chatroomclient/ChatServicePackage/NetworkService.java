@@ -66,7 +66,14 @@ public class NetworkService {
 
 //                    String s = in.readLine(); this is fault, must use the way under this context
                     System.out.println("the content has been readed:" + s);
-                    if (s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0) {
+
+                    int posi = s.indexOf("/");
+                    String command = new String();
+                    if(posi > 0){
+                        command = s.substring(0, posi);
+                    }
+
+                    if (command.compareTo("SuccessAccess") == 0 || command.compareTo("SuccessAccess/") == 0) {
                         //连接成功
                         String host = socket.getLocalSocketAddress().toString();
                         int port = socket.getPort();
