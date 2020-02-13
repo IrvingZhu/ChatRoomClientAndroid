@@ -5,6 +5,8 @@ import android.os.StrictMode;
 
 import com.example.chatroomclient.utility.ChatMessageExtract;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -13,6 +15,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 // AccessRoom command
 // format is "AccessChatRoom [UserName] [ChatName]"
@@ -22,7 +26,7 @@ import java.util.ArrayList;
 // format: "Chat [ChatRoom] [UserName] [Info]"
 // [Info] = 4 byte length info + 32 byte of chat userName + 1024 byte of chat words.
 
-public class NetworkService implements Runnable {
+public class NetworkService {
     public interface Callback {
         void onConnected(String host, int port);        //连接成功
 
@@ -43,32 +47,29 @@ public class NetworkService implements Runnable {
 
     // 套接字对象
     private Socket socket = null;
-    // 套接字输入流对象，从这里读取收到的消息
-    private DataInputStream inputStream = null;
-    // 套接字输出流对象，从这里发送聊天消息
-    private DataOutputStream outputStream = null;
+    // 套接字输出流对象，从这里读取收到的消息
+    private BufferedReader in = null;
     // 当前连接状态的标记变量
     private boolean isConnected = false;
     // 读消息线程
     private Thread this_thread;
     // 内部读消息类
-    private class listening implements Runnable{
+    private class ReceiveThread extends Thread{
         @Override
         public void run() {
             try {
-                System.out.println("buffer is constructed...");
-                // 获取字节流
-                NetworkService.this.inputStream = new DataInputStream(NetworkService.this.socket.getInputStream());
-                System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " reading...");
-
                 //轮询
                 while (true) {
-                    String s = inputStream.readUTF();
-                    System.out.println("the content has been readed");
+                    char recvbuf[] = new char[1536];
+                    in.read(recvbuf);
+                    String s = new String(recvbuf);
+
+//                    String s = in.readLine(); this is fault, must use the way under this context
+                    System.out.println("the content has been readed:" + s);
                     if (s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0) {
                         //连接成功
-                        String host = NetworkService.this.socket.getLocalSocketAddress().toString();
-                        int port = NetworkService.this.socket.getPort();
+                        String host = socket.getLocalSocketAddress().toString();
+                        int port = socket.getPort();
                         callback.onConnected(host, port);
                     } else {
                         //聊天
@@ -83,38 +84,92 @@ public class NetworkService implements Runnable {
         }
     };
 
+    //消息队列
+    private Queue<String> write_queue;
+    //消息队列锁
+    private static Object LOCK = true;
+
+    private class SendThread extends Thread{
+        @Override
+        public void run(){
+            try{
+                while(true){
+                    synchronized (LOCK){
+                        try{
+                            while(write_queue.size() == 0)
+                                LOCK.wait();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        String send_info = write_queue.poll();
+                        System.out.println("write info to server:" + send_info);
+                        socket.getOutputStream().write(send_info.getBytes("gb2312"));
+
+                        LOCK.notifyAll();
+                    }
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class startThread extends Thread{
+        private String host;
+        private int port;
+        private String userName;
+        private String RoomName;
+
+        public startThread(String host, int port, String userName, String RoomName){
+            this.host = host;
+            this.port = port;
+            this.userName = userName;
+            this.RoomName = RoomName;
+        }
+
+        @Override
+        public void run(){
+            try {
+                // 创建套接字对象，与服务器建立连接
+                socket = new Socket(host, port);
+                isConnected = true;
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " sending...");
+                String send_info = "AccessChatRoom " + userName + " " + RoomName;
+                socket.getOutputStream().write(send_info.getBytes("gb2312"));
+
+                // 启动读写线程
+                SendThread sendThd = new SendThread();
+                sendThd.start();
+
+                ReceiveThread recvThd = new ReceiveThread();
+                recvThd.start();
+
+            } catch (IOException e) {
+                // 连接服务器失败
+                isConnected = false;
+                // 通知外界连接失败
+                if (callback != null) {
+                    callback.onConnectFailed();
+                }
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * 连接到服务器
      * host 服务器地址
      * port 服务器端口
      */
 
-    private void beginListening() {
-        listening ls = new listening();
-        this.this_thread = new Thread(ls);
-        this.this_thread.start();
-    }
-
     public void connect(String host, int port, String userName, String RoomName) {
-        try {
-            // 创建套接字对象，与服务器建立连接
-            this.socket = new Socket(host, port);
-            this.isConnected = true;
-            System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " sending...");
-            String send_info = "AccessChatRoom " + userName + " " + RoomName;
-            this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
-
-            this.beginListening();
-
-        } catch (IOException e) {
-            // 连接服务器失败
-            this.isConnected = false;
-            // 通知外界连接失败
-            if (callback != null) {
-                callback.onConnectFailed();
-            }
-            e.printStackTrace();
-        }
+        // 构造消息队列
+        write_queue = new ConcurrentLinkedQueue<>();
+        // 连接到服务器
+        startThread st = new startThread(host, port, userName, RoomName);
+        st.start();
     }
 
     /**
@@ -125,11 +180,8 @@ public class NetworkService implements Runnable {
             if (socket != null) {
                 socket.close();
             }
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            if (outputStream != null) {
-                outputStream.close();
+            if (in != null) {
+                in.close();
             }
             isConnected = false;
             // 通知外界连接断开
@@ -166,16 +218,23 @@ public class NetworkService implements Runnable {
         }
 
         try {
-            // 将消息写入套接字的输出流
+            // 构造消息
             String send_info = "Chat " + chatRoom + " " + name + " " + msg;
-            System.out.println(send_info);
-            socket.getOutputStream().write(send_info.getBytes("gb2312"));
-            System.out.println("Send Successful");
+            System.out.println("Message is:" + send_info);
+
+            // 将消息写入消息队列
+            synchronized (LOCK){
+                write_queue.offer(send_info); // 往队列中写消息
+                System.out.println("the message is push back to message queue");
+
+                LOCK.notifyAll();
+            }
+
             // 通知外界消息已发送
             if (callback != null) {
                 callback.onMessageSent(chatRoom, name, msg);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -194,11 +253,5 @@ public class NetworkService implements Runnable {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void run(){
-        // 开始侦听是否有聊天消息到来
-        this.beginListening();
     }
 }

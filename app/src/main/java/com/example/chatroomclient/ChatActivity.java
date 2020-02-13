@@ -37,11 +37,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        if (Build.VERSION.SDK_INT >= 11) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
-            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
-        }
-
         final Intent intent = getIntent();
         this.uid = intent.getStringExtra("uid");
         this.name = intent.getStringExtra("uname");
@@ -95,7 +90,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initNetworkService(){
-        networkService = new NetworkService();
         networkService.setCallback(new NetworkService.Callback(){
             @Override
             public void onConnected(String host, int port){
