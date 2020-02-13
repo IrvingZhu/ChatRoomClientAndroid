@@ -18,17 +18,36 @@ import com.example.chatroomclient.utility.searchAllRoom;
 import com.example.chatroomclient.utility.searchAllUserInfo;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ChatSetActivity extends AppCompatActivity {
 
     private String uid;
     private String uname;
     private String upassword;
-    private String roomName;
-
     private ImageView myInfo;
     private ImageView create;
     private ImageView join;
+
+    private class tv_Listener implements View.OnClickListener{
+        private String Room_String;
+
+        public tv_Listener(String tv_name){
+            this.Room_String = tv_name;
+        }
+
+        @Override
+        public void onClick(View v){
+            Intent intent = new Intent(ChatSetActivity.this, ChatActivity.class);
+            intent.putExtra("uid", ChatSetActivity.this.uid);
+            intent.putExtra("uname", ChatSetActivity.this.uname);
+
+            intent.putExtra("roomname", Room_String);
+//                    contemporary variable to chat room
+            intent.putExtra("upassword",ChatSetActivity.this.upassword);
+            startActivity(intent);
+        }
+    }
 
     private void Transfer_ChatSetActivity(){
         final Intent intent = getIntent();
@@ -68,6 +87,7 @@ public class ChatSetActivity extends AppCompatActivity {
         TextView top_TextView = (TextView)findViewById(R.id.textView);
         LinearLayout bl = (LinearLayout)findViewById(R.id.bottom_ll);
 
+//        screen setting
         int resofScreen[] = this.getAndroidScreenProperty();
         int screen_Height = resofScreen[1];
 
@@ -82,27 +102,16 @@ public class ChatSetActivity extends AppCompatActivity {
         System.out.println("the sc height size is: " +  sc_lp.height);
 
         sc.setLayoutParams(sc_lp);
+//        end
 
-        int res_num = res.size(), count = 1;
+        int res_num = res.size();
+        int count = 1;
         while(count < res_num){
             TextView tv = new TextView(this);
             tv.setText(res.get(count));
             tv.setTextSize(50);
             ll.addView(tv);
-            String roomname = res.get(count);
-            InitialChatRoomSet(roomname);
-            tv.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Intent intent = new Intent(ChatSetActivity.this, ChatActivity.class);
-                    intent.putExtra("uid", ChatSetActivity.this.uid);
-                    intent.putExtra("uname", ChatSetActivity.this.uname);
-                    intent.putExtra("roomname", ChatSetActivity.this.roomName);
-//                    contemporary variable to chat room
-                    intent.putExtra("upassword",ChatSetActivity.this.upassword);
-                    startActivity(intent);
-                }
-            });
+            tv.setOnClickListener(new tv_Listener(tv.getText().toString()));
             count++;
         }
 
@@ -184,9 +193,5 @@ public class ChatSetActivity extends AppCompatActivity {
         }else{
             return 0;
         }
-    }
-
-    private void InitialChatRoomSet(String res){
-        this.roomName = res;
     }
 }

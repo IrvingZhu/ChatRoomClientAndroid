@@ -14,11 +14,15 @@ import com.example.chatroomclient.utility.RegisterActivity;
 public class register_Activity extends AppCompatActivity {
 
     private Button register;
+    private String this_addr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_interface);
+
+        Intent intent = getIntent();
+        this_addr = intent.getStringExtra("host_addr");
         register = findViewById(R.id.regis_check);
         register.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -31,7 +35,7 @@ public class register_Activity extends AppCompatActivity {
                 String u_password2 = etupassword2.getText().toString();
 
                 if(u_password1.compareTo(u_password2) == 0){
-                    RegisterActivity recon = new RegisterActivity(u_name, u_password1);
+                    RegisterActivity recon = new RegisterActivity(u_name, u_password1, this_addr);
                     Thread t1 = new Thread(recon);
 
                     t1.start();

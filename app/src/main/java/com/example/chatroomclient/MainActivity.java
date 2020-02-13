@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button Login;
     private Button Register;
+    private String this_addr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 String res_uname = et_uname.getText().toString();
                 String res_upassword = et_upassword.getText().toString();
                 String host_addr = ip.getText().toString();
+                this_addr = host_addr;
 
 //                query to server database
                 login_Query query = new login_Query();
@@ -67,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
         Register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                EditText ip = findViewById(R.id.ip);
+                this_addr = ip.getText().toString();
                 Intent intent = new Intent(MainActivity.this, register_Activity.class);
+                intent.putExtra("host_addr", this_addr);
                 startActivity(intent);
             }
         });

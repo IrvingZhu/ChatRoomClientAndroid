@@ -5,26 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatroomclient.ChatServicePackage.NetworkService;
 //import com.example.chatroomclient.Chatutil.ChatAdapter;
-import com.example.chatroomclient.Chatutil.PersonChat;
 import com.example.chatroomclient.Socket.host;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     private NetworkService networkService;
@@ -37,7 +31,6 @@ public class ChatActivity extends AppCompatActivity {
     private String uid;
     private String name;
     private String psw_temp; // this is not to use
-    private PersonChat my_send;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
         this.host = host.host;
         this.port = host.port;
 
+        this.networkService = new NetworkService();
         this.initNetworkService();
         this.networkService.connect(this.host, this.port, this.name, this.this_room);
 
@@ -123,13 +117,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onMessageSent(String RoomName, String name, String msg){
                 System.out.println(name + " send info :" + msg);
-//                the item add your send info
-                PersonChat p = new PersonChat();
-                p.setMeSend(true);
-
-                p.setName(name);
-                p.setChatMessage(msg);
-                ChatActivity.this.my_send = p;
 
                 chat_dialog = findViewById(R.id.chat_dialog_ll);
                 TextView t = new TextView(ChatActivity.this);
@@ -143,26 +130,15 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onMessageReceived(ArrayList<String> res){
-                if(res.size() == 1) Toast.makeText(ChatActivity.this, res.get(0), Toast.LENGTH_LONG).show();
-                else{
+                if(res.size() == 1)
+                    Toast.makeText(ChatActivity.this, res.get(0), Toast.LENGTH_LONG).show();
+                else {
                     System.out.println(res.get(0) + " receive info " + res.get(1));
-//                the item add your receive info
-                    PersonChat p = new PersonChat();
-                    p.setMeSend(false);
-//                    ChatActivity.this.personChats.add(p);
-
-                    p.setName(res.get(0));
-                    p.setChatMessage(res.get(1));
-
-                    if(p.getName().compareTo(ChatActivity.this.my_send.getName()) != 0 &&
-                        p.getChatMessage().compareTo(ChatActivity.this.my_send.getChatMessage()) != 0)
-                    {
-                        chat_dialog = findViewById(R.id.chat_dialog_ll);
-                        TextView t = new TextView(ChatActivity.this);
-                        t.setText(res.get(0) + ":" + res.get(1));
-                        t.setTextSize(30);
-                        chat_dialog.addView(t);
-                    }
+                    chat_dialog = findViewById(R.id.chat_dialog_ll);
+                    TextView t = new TextView(ChatActivity.this);
+                    t.setText(res.get(0) + ":" + res.get(1));
+                    t.setTextSize(30);
+                    chat_dialog.addView(t);
                 }
             }
         });

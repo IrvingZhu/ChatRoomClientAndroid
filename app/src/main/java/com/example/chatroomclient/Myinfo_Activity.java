@@ -44,10 +44,10 @@ public class Myinfo_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText name = (EditText) findViewById(R.id.myInfo_Uname);
-                if (name == Myinfo_Activity.this.myName) {
+                if (name.getText().toString() == uid) {
                     Toast.makeText(Myinfo_Activity.this, "输入名字与数据库名字一样，无法修改", Toast.LENGTH_LONG).show();
                 } else {
-                    modInfo m = new modInfo(Myinfo_Activity.this.uid, Myinfo_Activity.this.uname, 0);
+                    modInfo m = new modInfo(Myinfo_Activity.this.uid, name.getText().toString(), 0);
                     Thread t = new Thread(m);
                     t.start();
 

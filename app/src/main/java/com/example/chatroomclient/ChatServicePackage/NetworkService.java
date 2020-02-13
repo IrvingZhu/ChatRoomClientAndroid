@@ -5,9 +5,12 @@ import android.os.StrictMode;
 
 import com.example.chatroomclient.utility.ChatMessageExtract;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -46,7 +49,39 @@ public class NetworkService implements Runnable {
     private DataOutputStream outputStream = null;
     // 当前连接状态的标记变量
     private boolean isConnected = false;
+    // 读消息线程
+    private Thread this_thread;
+    // 内部读消息类
+    private class listening implements Runnable{
+        @Override
+        public void run() {
+            try {
+                System.out.println("buffer is constructed...");
+                // 获取字节流
+                NetworkService.this.inputStream = new DataInputStream(NetworkService.this.socket.getInputStream());
+                System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " reading...");
 
+                //轮询
+                while (true) {
+                    String s = inputStream.readUTF();
+                    System.out.println("the content has been readed");
+                    if (s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0) {
+                        //连接成功
+                        String host = NetworkService.this.socket.getLocalSocketAddress().toString();
+                        int port = NetworkService.this.socket.getPort();
+                        callback.onConnected(host, port);
+                    } else {
+                        //聊天
+                        ChatMessageExtract Chat_util = new ChatMessageExtract();
+                        ArrayList<String> result = Chat_util.Extract(s);
+                        callback.onMessageReceived(result);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     /**
      * 连接到服务器
@@ -55,35 +90,9 @@ public class NetworkService implements Runnable {
      */
 
     private void beginListening() {
-        Runnable listening = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    inputStream = new DataInputStream(socket.getInputStream());
-
-                    while (true) {
-                        String s = inputStream.readUTF().toString();
-                        if (s.compareTo("SuccessAccess") == 0 && s.compareTo("SuccessAccess/") == 0) {
-//                            String res = new String("连接成功，可以开始聊天了");
-//                            ArrayList<String> result = new ArrayList<String>();
-//                            result.add(res);
-                            String host = NetworkService.this.socket.getLocalSocketAddress().toString();
-                            int port = NetworkService.this.socket.getPort();
-                            callback.onConnected(host, port);
-                        } else {
-                            ChatMessageExtract Chat_util = new ChatMessageExtract();
-                            ArrayList<String> result = Chat_util.Extract(s);
-                            if (callback != null) {
-                                callback.onMessageReceived(result);
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        (new Thread(listening)).start();
+        listening ls = new listening();
+        this.this_thread = new Thread(ls);
+        this.this_thread.start();
     }
 
     public void connect(String host, int port, String userName, String RoomName) {
@@ -91,13 +100,10 @@ public class NetworkService implements Runnable {
             // 创建套接字对象，与服务器建立连接
             this.socket = new Socket(host, port);
             this.isConnected = true;
-            // 通知外界已连接
-            if (this.callback != null) {
-                this.callback.onConnected(host, port);
-            }
-
+            System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " sending...");
             String send_info = "AccessChatRoom " + userName + " " + RoomName;
             this.socket.getOutputStream().write(send_info.getBytes("gb2312"));
+
             this.beginListening();
 
         } catch (IOException e) {
