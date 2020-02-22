@@ -140,7 +140,7 @@ public class NetworkService {
                 // 创建套接字对象，与服务器建立连接
                 socket = new Socket(host, port);
                 isConnected = true;
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "gb2312"));
 
                 System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " sending...");
                 String send_info = "AccessChatRoom " + userName + " " + RoomName;

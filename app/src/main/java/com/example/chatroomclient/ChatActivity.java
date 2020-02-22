@@ -95,13 +95,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onConnected(String host, int port){
                 System.out.println("The client has connected to the " + host + ":" + port);
-//                Toast.makeText(ChatActivity.this, "聊天室已连接到 " + host + ":" + port, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onConnectFailed(){
                 System.out.println("The client has failed to connect to server");
-//                Toast.makeText(ChatActivity.this, "连接失败，请检查网络设置", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -131,9 +129,18 @@ public class ChatActivity extends AppCompatActivity {
                     System.out.println(res.get(0) + " receive info " + res.get(1));
                     chat_dialog = findViewById(R.id.chat_dialog_ll);
                     TextView t = new TextView(ChatActivity.this);
-                    t.setText(res.get(0) + ":" + res.get(1));
-                    t.setTextSize(30);
-                    chat_dialog.addView(t);
+                    try
+                    {
+//                        byte[] b = res.get(1).getBytes("UTF-8");
+//                        String submit_info = new String(b, "gb2312");
+                        System.out.println("The chat print item is: " + res.get(0) + ":" + res.get(1));
+                        t.setText(res.get(0) + ":" + res.get(1));
+                        t.setTextSize(30);
+                        chat_dialog.addView(t);
+                    }catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
