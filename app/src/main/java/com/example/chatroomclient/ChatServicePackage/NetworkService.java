@@ -51,8 +51,6 @@ public class NetworkService {
     private BufferedReader in = null;
     // 当前连接状态的标记变量
     private boolean isConnected = false;
-    // 读消息线程
-    private Thread this_thread;
     // 内部读消息类
     private class ReceiveThread extends Thread{
         @Override
@@ -78,7 +76,12 @@ public class NetworkService {
                         String host = socket.getLocalSocketAddress().toString();
                         int port = socket.getPort();
                         callback.onConnected(host, port);
-                    } else {
+                    }
+                    else if (command.compareTo("Exist?") == 0){
+                        //心跳检测，不管
+                        continue;
+                    }
+                    else {
                         //聊天
                         ChatMessageExtract Chat_util = new ChatMessageExtract();
                         ArrayList<String> result = Chat_util.Extract(s);
@@ -90,6 +93,9 @@ public class NetworkService {
             }
         }
     };
+
+    // 读消息线程
+    private ReceiveThread recvThd;
 
     //消息队列
     private Queue<String> write_queue;
@@ -121,6 +127,9 @@ public class NetworkService {
         }
     }
 
+    // 写消息线程
+    private SendThread sendThd;
+
     private class startThread extends Thread{
         private String host;
         private int port;
@@ -147,10 +156,10 @@ public class NetworkService {
                 socket.getOutputStream().write(send_info.getBytes("gb2312"));
 
                 // 启动读写线程
-                SendThread sendThd = new SendThread();
+                sendThd = new SendThread();
                 sendThd.start();
 
-                ReceiveThread recvThd = new ReceiveThread();
+                recvThd = new ReceiveThread();
                 recvThd.start();
 
             } catch (IOException e) {
@@ -253,7 +262,12 @@ public class NetworkService {
         try{
             String send_info = "Leave " + chatRoom;
             System.out.println("Prepare to leave " + chatRoom);
-            socket.getOutputStream().write(send_info.getBytes("gb2312"));
+            synchronized(LOCK){
+                write_queue.offer(send_info);
+                System.out.println("the message is push back to message queue");
+
+                LOCK.notifyAll();
+            }
             System.out.println("Send successful");
 
             this.disconnect();

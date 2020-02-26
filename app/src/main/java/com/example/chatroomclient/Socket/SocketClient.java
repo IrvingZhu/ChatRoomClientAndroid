@@ -29,7 +29,7 @@ public class SocketClient {
 
     public boolean Login(String res_uname, String res_upassword) {
         this.socket = new Socket();
-//        this.socket.connect(new InetSocketAddress(host, port));
+
         try {
             System.out.println("Prepare to connect to " + host.host + ":" + host.port);
 
@@ -113,13 +113,9 @@ public class SocketClient {
 
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
-//            char medi[] = new char[128];
-//            reader.read(medi, 0, medi.length);
-//            String room_info = new String(medi);
-//            while(!finished){
             String response = reader.readLine();
             System.out.println(response);
-//
+
             String room_info = new String("");
             if(response.indexOf("/") == -1){
                 room_info = room_info + response;
@@ -127,16 +123,13 @@ public class SocketClient {
                 int posi = response.indexOf("/");
                 room_info = response.substring(0, posi);
             }
-//
-//            System.out.println(room_info);
-//            }
-//
-//            room_info = room_info.substring(0, room_info.length()-1);
+
             System.out.println(room_info);
 
             findInfo f = new findInfo();
             ArrayList<String> res = f.findAllInfo(room_info);
 
+            socket.close();
             return res;
 
         }catch(Exception e){
@@ -183,6 +176,7 @@ public class SocketClient {
                 result.add(res.get(i));
             }
 
+            socket.close();
             return result;
 
         }catch(Exception e){
@@ -219,6 +213,7 @@ public class SocketClient {
 
                     break;
                 default:
+                    socket.close();
                     return false;
             }
 
@@ -237,8 +232,12 @@ public class SocketClient {
             }
 
             if(return_info.compareTo("SuccessModify") == 0 || return_info.compareTo("SuccessModPsw") == 0){
+                socket.close();
                 return true;
-            }else return false;
+            }else {
+                socket.close();
+                return false;
+            }
 
 
         }catch(Exception e){
@@ -272,8 +271,12 @@ public class SocketClient {
             }
 
             if(return_info.compareTo("SuccessJoin") == 0){
+                socket.close();
                 return true;
-            }else return false;
+            }else {
+                socket.close();
+                return false;
+            }
         }catch(Exception e){
             e.printStackTrace();
             return false;
@@ -305,8 +308,12 @@ public class SocketClient {
             }
 
             if(return_info.compareTo("SuccessCre") == 0){
+                socket.close();
                 return true;
-            }else return false;
+            }else {
+                socket.close();
+                return false;
+            }
         }catch(Exception e){
             e.printStackTrace();
             return false;
