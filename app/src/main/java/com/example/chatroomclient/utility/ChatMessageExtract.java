@@ -8,12 +8,23 @@ public class ChatMessageExtract {
         ArrayList<String> res = new ArrayList<String>();
 //        handle the information
 
-        String user = src.substring(0, 31);
-        String info = src.substring(32);
+        src = this.return_blank(src);
+
+        int posi = src.indexOf(':');
+        String user = src.substring(0, posi);
+        String info = src.substring(posi + 1);
 
         res.add(user);
         res.add(info);
 
         return res;
+    }
+
+    public String Substr_blank(String src){
+        return src.replace(' ', '\127');
+    }
+
+    public String return_blank(String src){
+        return src.replace('\127', ' ');
     }
 }

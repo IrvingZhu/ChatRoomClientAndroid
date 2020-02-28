@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.chatroomclient.ChatServicePackage.NetworkService;
 import com.example.chatroomclient.Socket.host;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class ChatActivity extends AppCompatActivity {
     private NetworkService networkService;
@@ -32,6 +34,9 @@ public class ChatActivity extends AppCompatActivity {
     private String uid;
     private String name;
     private String psw_temp; // this is not to use
+    private String temp_info;
+
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,8 @@ public class ChatActivity extends AppCompatActivity {
         this.networkService = new NetworkService();
         this.initNetworkService();
         this.networkService.connect(this.host, this.port, this.name, this.this_room);
+
+        handler = new Handler();
 
         send = (Button) findViewById(R.id.btn_chat_message_send);
         send.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +94,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void initNetworkService(){
@@ -117,26 +123,35 @@ public class ChatActivity extends AppCompatActivity {
                 t.setTextSize(30);
                 chat_dialog.addView(t);
 
+                temp_info = name + ":" + msg;
+
                 EditText info_input = (EditText) findViewById(R.id.et_chat_message);
                 info_input.setText("");
             }
 
             @Override
-            public void onMessageReceived(ArrayList<String> res){
+            public void onMessageReceived(final ArrayList<String> res){
                 if(res.size() == 1)
                     Toast.makeText(ChatActivity.this, res.get(0), Toast.LENGTH_LONG).show();
                 else {
                     System.out.println(res.get(0) + " receive info " + res.get(1));
-                    chat_dialog = findViewById(R.id.chat_dialog_ll);
-                    TextView t = new TextView(ChatActivity.this);
                     try
                     {
-//                        byte[] b = res.get(1).getBytes("UTF-8");
-//                        String submit_info = new String(b, "gb2312");
                         System.out.println("The chat print item is: " + res.get(0) + ":" + res.get(1));
-                        t.setText(res.get(0) + ":" + res.get(1));
-                        t.setTextSize(30);
-                        chat_dialog.addView(t);
+                        if((res.get(0) + ":" + res.get(1)).compareTo(temp_info) == 0)
+                            return;
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                chat_dialog = findViewById(R.id.chat_dialog_ll);
+                                TextView t = new TextView(ChatActivity.this);
+
+                                t.setText(res.get(0) + ":" + res.get(1));
+                                t.setTextSize(25);
+                                chat_dialog.addView(t);
+                            }
+                        });
                     }catch(Exception e)
                     {
                         e.printStackTrace();

@@ -84,6 +84,8 @@ public class NetworkService {
                     else {
                         //聊天
                         ChatMessageExtract Chat_util = new ChatMessageExtract();
+                        int posi_null = s.indexOf('/');
+                        s = s.substring(0, posi_null);
                         ArrayList<String> result = Chat_util.Extract(s);
                         callback.onMessageReceived(result);
                     }
@@ -235,7 +237,9 @@ public class NetworkService {
 
         try {
             // 构造消息
-            String send_info = "Chat " + chatRoom + " " + name + " " + msg;
+            ChatMessageExtract Chat_util = new ChatMessageExtract();
+            String newMsg = Chat_util.Substr_blank(msg);
+            String send_info = "Chat " + chatRoom + " " + name + " " + newMsg + "/";
             System.out.println("Message is:" + send_info);
 
             // 将消息写入消息队列
