@@ -54,6 +54,8 @@ public class ChatActivity extends AppCompatActivity {
         this.host = host.host;
         this.port = host.port;
 
+        temp_info = new String();
+
         this.networkService = new NetworkService();
         this.initNetworkService();
         this.networkService.connect(this.host, this.port, this.name, this.this_room);

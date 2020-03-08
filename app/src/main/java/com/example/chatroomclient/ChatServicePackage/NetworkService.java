@@ -62,33 +62,28 @@ public class NetworkService {
                     in.read(recvbuf);
                     String s = new String(recvbuf);
 
-//                    String s = in.readLine(); this is fault, must use the way under this context
                     System.out.println("the content has been readed:" + s);
 
-                    int posi = s.indexOf("/");
-                    String command = new String();
-                    if(posi > 0){
-                        command = s.substring(0, posi);
+                    ChatMessageExtract Chat_util = new ChatMessageExtract();
+
+                    Queue<String> output = Chat_util.SplitAllInfoInSocket(s);
+                    while(output.size() != 0){
+                        String output_message = output.poll();
+                        if(output_message.compareTo("SuccessAccess") == 0){
+                            //连接成功
+                            String host = socket.getLocalSocketAddress().toString();
+                            int port = socket.getPort();
+                            callback.onConnected(host, port);
+                        }else if(output_message.compareTo("Exist?") == 0){
+                            //心跳检测不管
+                            continue;
+                        }else{
+                            //聊天消息发出
+                            ArrayList<String> result = Chat_util.Extract(output_message);
+                            callback.onMessageReceived(result);
+                        }
                     }
 
-                    if (command.compareTo("SuccessAccess") == 0 || command.compareTo("SuccessAccess/") == 0) {
-                        //连接成功
-                        String host = socket.getLocalSocketAddress().toString();
-                        int port = socket.getPort();
-                        callback.onConnected(host, port);
-                    }
-                    else if (command.compareTo("Exist?") == 0){
-                        //心跳检测，不管
-                        continue;
-                    }
-                    else {
-                        //聊天
-                        ChatMessageExtract Chat_util = new ChatMessageExtract();
-                        int posi_null = s.indexOf('/');
-                        s = s.substring(0, posi_null);
-                        ArrayList<String> result = Chat_util.Extract(s);
-                        callback.onMessageReceived(result);
-                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -239,7 +234,7 @@ public class NetworkService {
             // 构造消息
             ChatMessageExtract Chat_util = new ChatMessageExtract();
             String newMsg = Chat_util.Substr_blank(msg);
-            String send_info = "Chat " + chatRoom + " " + name + " " + newMsg + "/";
+            String send_info = "Chat " + chatRoom + " \r" + name + " " + newMsg + "\n\0\0";
             System.out.println("Message is:" + send_info);
 
             // 将消息写入消息队列
